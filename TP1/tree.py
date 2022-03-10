@@ -1,10 +1,10 @@
 import numpy as np
 import hashlib
 
-
 class Tree:
-    def __init__(self, initial_state):
+    def __init__(self, initial_state, comparator):
         self.root = self.Node(initial_state, np.array([]), None)
+        Tree.Node.comparator = comparator
     
     def get_root(self):
         return self.root
@@ -50,6 +50,8 @@ class Tree:
             x = self.__eq__(other)
             if x is NotImplemented:
                 return NotImplemented
-
             return not x
+        
+        def __lt__(self, other):
+            return Tree.Node.comparator(self, other)
 

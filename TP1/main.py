@@ -1,6 +1,7 @@
 import json
 import sys
-from solver import Solver
+from solvers.dfs_solver import DFSsolver
+from solvers.bfs_solver import BFSsolver
 
 from puzzle import Puzzle
 
@@ -16,14 +17,14 @@ with open(sys.argv[1], 'r') as config_file:
 
 if not 'algo' in config:
     print('Must specify algorithm in config file')
-    exit();
+    exit()
 
 if config['algo'] == 'BPA':
-    print('BPA')
+    s = BFSsolver(Puzzle())
 elif config['algo'] == 'BPP':
-    print('BPP')
+    s = DFSsolver(Puzzle())
 elif config['algo'] == 'BPPV':
-    print('BPPV')
+    s = BFSsolver(Puzzle())
 else:
     print('Wrong algorythm inserted')
     exit()
@@ -36,8 +37,9 @@ else:
 # p.move_square(1, 1, 0, 1)
 # p.print_board()
 
-s = Solver(Puzzle())
+# s = DFSsolver(Puzzle())
 solution = s.solve()
 
-for i in solution:
-    i.get_state().print_board()
+if len(solution) > 0:
+    for node in solution:
+        node.get_state().print_board()

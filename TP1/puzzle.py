@@ -6,7 +6,7 @@ class Puzzle:
 
     def __init__(self):
         self.board = np.array(np.random.choice(9, size=(3, 3), replace=False))
-        # self.board = np.array([[2, 4, 3], [1, 6, 8], [7, 5, 0]])
+        # self.board = np.array([[8, 1, 2], [0, 4, 3], [7, 6, 5]])
         self.empty_square = self.find_empty()  # TODO primero hacemos un find en realidad
 
     @staticmethod
@@ -58,7 +58,6 @@ class Puzzle:
     def __eq__(self, other):
         if isinstance(other, self.__class__):
             return np.array_equal(self.board, other.board)
-
         return NotImplemented
 
     def __ne__(self, other):
