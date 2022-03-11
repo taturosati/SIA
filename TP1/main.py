@@ -3,15 +3,14 @@ import sys
 from solvers.dfs_solver import DFSsolver
 from solvers.bfs_solver import BFSsolver
 from solvers.vdfs_solver import VDFSsolver
+from solvers.global_heuristic_solver import GlobalHeuristicSolver
+from solvers.a_star_solver import AStarSolver
 
 from puzzle import Puzzle
 
-# config = {"algo": "BPA"}
 if len(sys.argv) < 2 or not str(sys.argv[1]).endswith('.json'):
     print('Please enter the configuration file (e.g. python3 main.py config.json)')
     exit()
-
-# print(str(sys.argv))
 
 with open(sys.argv[1], 'r') as config_file:
     config = json.load(config_file)
@@ -25,6 +24,12 @@ with open(sys.argv[1], 'r') as config_file:
         s = BFSsolver(Puzzle())
     elif config['algo'] == 'BPP':
         s = DFSsolver(Puzzle())
+    elif config['algo'] == 'GLOBAL':
+        # TODO: tambien habria que agregar en config que heuristica
+        s = GlobalHeuristicSolver(Puzzle())
+    elif config['algo'] == 'A*':
+        # TODO: tambien habria que agregar en config que heuristica
+        s = AStarSolver(Puzzle())
     elif config['algo'] == 'BPPV':
         if 'limit' in config:
             limit = config['limit']

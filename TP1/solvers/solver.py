@@ -37,16 +37,15 @@ class Solver:
                 self.explored[str(curr_state.get_board())] = curr_node
 
             if curr_state.is_solution(curr_state.get_board()):
+                print("--- %s seconds ---" % (time.time() - start_time))
                 print('Solved!')
                 print('Cost: ' + str(curr_node.get_cost()))
                 print('Depth: ' + str(curr_node.get_cost()))
                 self.print_stats()
                 solution = []
-
                 while(curr_node is not None):
                     solution.insert(0, curr_node)
                     curr_node = curr_node.get_parent()
-                print("--- %s seconds ---" % (time.time() - start_time))
                 return solution
 
             valid_moves = self.valid_moves(curr_state)
