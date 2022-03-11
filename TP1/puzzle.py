@@ -7,7 +7,8 @@ class Puzzle:
     def __init__(self):
         self.board = np.array(np.random.choice(9, size=(3, 3), replace=False))
         # self.board = np.array([[8, 1, 2], [0, 4, 3], [7, 6, 5]])
-        self.empty_square = self.find_empty()  # TODO primero hacemos un find en realidad
+        # TODO primero hacemos un find en realidad
+        self.empty_square = self.find_empty()
 
     @staticmethod
     def valid_position(row, col):
@@ -26,19 +27,28 @@ class Puzzle:
                 print(self.board[i][j], end='')
             print()
 
-    
+    def string_board(self):
+        to_return = ''
+        for i in range(3):
+            for j in range(3):
+                to_return = to_return + str(self.board[i][j])
+                # print(self.board[i][j], end='')
+            to_return = to_return + '\n'
+            # print()
+        to_return = to_return + '\n'
+        return to_return
+
     def is_valid_move(self, from_row, from_col, to_row, to_col):
         return Puzzle.valid_position(from_row, from_col) and Puzzle.valid_position(to_row, to_col) and \
-            self.board[to_row][to_col] == 0 and (abs(from_row - to_row) + abs(from_col - to_col)) == 1
-            
+            self.board[to_row][to_col] == 0 and (
+                abs(from_row - to_row) + abs(from_col - to_col)) == 1
 
     def move_square(self, from_row, from_col, to_row, to_col):
         if not self.is_valid_move(from_row, from_col, to_row, to_col):
             return False
-            
+
         self.board[to_row][to_col], self.board[from_row][from_col] = self.board[from_row][from_col], 0
         self.empty_square = (from_row, from_col)
-        
 
     def is_solution(self, board):
         return np.array_equal(board, Puzzle.objective)
@@ -65,4 +75,3 @@ class Puzzle:
         if x is NotImplemented:
             return NotImplemented
         return not x
-

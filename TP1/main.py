@@ -15,19 +15,24 @@ if len(sys.argv) != 2 or not str(sys.argv[1]).endswith('.json'):
 with open(sys.argv[1], 'r') as config_file:
     config = json.load(config_file)
 
-if not 'algo' in config:
-    print('Must specify algorithm in config file')
-    exit()
+    if not 'algo' in config:
+        print('Must specify algorithm in config file')
+        config_file.close()
+        exit()
 
-if config['algo'] == 'BPA':
-    s = BFSsolver(Puzzle())
-elif config['algo'] == 'BPP':
-    s = DFSsolver(Puzzle())
-elif config['algo'] == 'BPPV':
-    s = BFSsolver(Puzzle())
-else:
-    print('Wrong algorythm inserted')
-    exit()
+    if config['algo'] == 'BPA':
+        s = BFSsolver(Puzzle())
+    elif config['algo'] == 'BPP':
+        s = DFSsolver(Puzzle())
+    elif config['algo'] == 'BPPV':
+        s = BFSsolver(Puzzle())
+    else:
+        print('Wrong algorythm inserted')
+        config_file.close()
+        exit()
+
+    config_file.close()
+
 
 # p = Puzzle()
 # p.print_board()
@@ -41,5 +46,7 @@ else:
 solution = s.solve()
 
 if len(solution) > 0:
-    for node in solution:
-        node.get_state().print_board()
+    with open('solution.txt', 'w') as solution_file:
+        for node in solution:
+            solution_file.write(node.get_state().string_board())
+        solution_file.close()
