@@ -5,8 +5,11 @@ class Puzzle:
     objective = np.array([[1, 2, 3], [4, 5, 6], [7, 8, 0]])
 
     def __init__(self):
-        self.board = np.array(np.random.choice(9, size=(3, 3), replace=False))
-        # self.board = np.array([[8, 1, 2], [0, 4, 3], [7, 6, 5]])
+        self.board = np.array(np.random.choice(
+            9, size=(3, 3), replace=False))  # Random
+        # self.board = np.array([[8, 1, 2], [0, 4, 3], [7, 6, 5]]) # No solution
+        # self.board = np.array(
+        #     [[0, 1, 2], [3, 4, 5], [6, 7, 8]])  # Has solution
         # TODO primero hacemos un find en realidad
         self.empty_square = self.find_empty()
 
@@ -47,7 +50,8 @@ class Puzzle:
         if not self.is_valid_move(from_row, from_col, to_row, to_col):
             return False
 
-        self.board[to_row][to_col], self.board[from_row][from_col] = self.board[from_row][from_col], 0
+        # self.board[to_row][to_col], self.board[from_row][from_col] = self.board[from_row][from_col], 0
+        self.board[to_row][to_col], self.board[from_row][from_col] = self.board[from_row][from_col], self.board[to_row][to_col]
         self.empty_square = (from_row, from_col)
 
     def is_solution(self, board):

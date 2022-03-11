@@ -2,11 +2,12 @@ import json
 import sys
 from solvers.dfs_solver import DFSsolver
 from solvers.bfs_solver import BFSsolver
+from solvers.vdfs_solver import VDFSsolver
 
 from puzzle import Puzzle
 
 # config = {"algo": "BPA"}
-if len(sys.argv) != 2 or not str(sys.argv[1]).endswith('.json'):
+if len(sys.argv) < 2 or not str(sys.argv[1]).endswith('.json'):
     print('Please enter the configuration file (e.g. python3 main.py config.json)')
     exit()
 
@@ -25,9 +26,13 @@ with open(sys.argv[1], 'r') as config_file:
     elif config['algo'] == 'BPP':
         s = DFSsolver(Puzzle())
     elif config['algo'] == 'BPPV':
-        s = BFSsolver(Puzzle())
+        if 'limit' in config:
+            limit = config['limit']
+        else:
+            limit = 10000
+        s = VDFSsolver(Puzzle(), limit)
     else:
-        print('Wrong algorythm inserted')
+        print('Wrong algorithm inserted')
         config_file.close()
         exit()
 
