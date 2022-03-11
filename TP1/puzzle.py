@@ -50,8 +50,7 @@ class Puzzle:
         if not self.is_valid_move(from_row, from_col, to_row, to_col):
             return False
 
-        # self.board[to_row][to_col], self.board[from_row][from_col] = self.board[from_row][from_col], 0
-        self.board[to_row][to_col], self.board[from_row][from_col] = self.board[from_row][from_col], self.board[to_row][to_col]
+        self.board[to_row][to_col], self.board[from_row][from_col] = self.board[from_row][from_col], 0
         self.empty_square = (from_row, from_col)
 
     def is_solution(self, board):
