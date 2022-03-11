@@ -4,6 +4,7 @@ from solvers.dfs_solver import DFSsolver
 from solvers.bfs_solver import BFSsolver
 from solvers.vdfs_solver import VDFSsolver
 from solvers.global_heuristic_solver import GlobalHeuristicSolver
+from solvers.local_heuristic_solver import LocalHeuristicSolver
 from solvers.a_star_solver import AStarSolver
 
 from puzzle import Puzzle
@@ -20,21 +21,28 @@ with open(sys.argv[1], 'r') as config_file:
         config_file.close()
         exit()
 
+    sys.setrecursionlimit(10**6)
+
+    heu = 'EUC'
+    if 'heu' in config:
+        heu = config['heu']
+    limit = 10000
+    if 'limit' in config:
+        limit = config['limit']
+
     if config['algo'] == 'BPA':
         s = BFSsolver(Puzzle())
     elif config['algo'] == 'BPP':
         s = DFSsolver(Puzzle())
+    elif config['algo'] == 'LOCAL':
+        s = LocalHeuristicSolver(Puzzle(heu))
     elif config['algo'] == 'GLOBAL':
-        # TODO: tambien habria que agregar en config que heuristica
-        s = GlobalHeuristicSolver(Puzzle())
+        s = GlobalHeuristicSolver(Puzzle(heu))
     elif config['algo'] == 'A*':
-        # TODO: tambien habria que agregar en config que heuristica
-        s = AStarSolver(Puzzle())
+        s = AStarSolver(Puzzle(heu))
     elif config['algo'] == 'BPPV':
         if 'limit' in config:
             limit = config['limit']
-        else:
-            limit = 10000
         s = VDFSsolver(Puzzle(), limit)
     else:
         print('Wrong algorithm inserted')
@@ -43,16 +51,6 @@ with open(sys.argv[1], 'r') as config_file:
 
     config_file.close()
 
-
-# p = Puzzle()
-# p.print_board()
-# p.move_square(0, 1, 0, 0)
-# print(p.is_solution())
-# p.print_board()
-# p.move_square(1, 1, 0, 1)
-# p.print_board()
-
-# s = DFSsolver(Puzzle())
 solution = s.solve()
 
 if len(solution) > 0:

@@ -7,19 +7,22 @@ class Puzzle:
     correct_position = {0: (2, 2), 1: (0, 0), 2: (0, 1), 3: (0, 2),
                         4: (1, 0), 5: (1, 1), 6: (1, 2), 7: (2, 0), 8: (2, 1)}
 
-    def __init__(self):
+    def __init__(self, heuristic_config = 'EUC'):
         self.board = np.array(np.random.choice(9, size=(3, 3), replace=False))  # Random
-        # self.board = np.array([[8, 1, 2], [0, 4, 3], [7, 6, 5]]) # No solution
+        # self.board = np.array([[8, 1, 2], [0, 4, 3], [7, 6, 5]])  # No solution
         # self.board = np.array([[3, 1, 8], [5, 6, 7], [0, 4, 2]])  # Has solution
         self.empty_square = self.find_empty()
+        self.heuristic_config = heuristic_config
 
     def heuristic(self):
         to_return = 0
         for (i, row) in enumerate(self.board):
             for (j, square) in enumerate(row):
                 target = self.correct_position[square]
-                to_return += math.sqrt(math.pow(abs(i -
-                                       target[0]), 2) + math.pow(abs(j-target[1]), 2))
+                if self.heuristic_config == 'EUC':
+                    to_return += math.sqrt(math.pow(i - target[0], 2) + math.pow(j-target[1], 2))
+                else:
+                    to_return += abs(i - target[0]) + abs(j-target[1])
 
         return to_return
 
@@ -63,8 +66,8 @@ class Puzzle:
         self.board[to_row][to_col], self.board[from_row][from_col] = self.board[from_row][from_col], 0
         self.empty_square = (from_row, from_col)
 
-    def is_solution(self, board):
-        return np.array_equal(board, Puzzle.objective)
+    def is_solution(self):
+        return np.array_equal(self.board, Puzzle.objective)
 
     def find_empty(self):
         for i in range(3):

@@ -34,9 +34,9 @@ class Solver:
             curr_state = curr_node.get_state()
 
             if str(curr_state.get_board()) not in self.explored:
-                self.explored[str(curr_state.get_board())] = curr_node
+                self.explored[str(curr_state.get_board())] = curr_node # TODO stringify de otra manera
 
-            if curr_state.is_solution(curr_state.get_board()):
+            if curr_state.is_solution():
                 print("--- %s seconds ---" % (time.time() - start_time))
                 print('Solved!')
                 print('Cost: ' + str(curr_node.get_cost()))
