@@ -1,3 +1,4 @@
+from mimetypes import init
 import numpy as np
 import math
 
@@ -7,11 +8,15 @@ class Puzzle:
     correct_position = {0: (2, 2), 1: (0, 0), 2: (0, 1), 3: (0, 2),
                         4: (1, 0), 5: (1, 1), 6: (1, 2), 7: (2, 0), 8: (2, 1)}
 
-    def __init__(self, heuristic_config='EUC'):
-        self.board = np.array(np.random.choice(9, size=(3, 3), replace=False))  # Random
-        #self.board = np.array([[8, 1, 2], [0, 4, 3], [7, 6, 5]])  # No solution
-        #self.board = np.array([[8, 6, 7], [2, 5, 4], [3, 0, 1]])   # Hardest solution
-        #self.board = np.array([[3, 1, 8], [5, 6, 7], [0, 4, 2]])  # Has solution
+    def __init__(self, initial_state, heuristic_config='EUC'):
+        if initial_state is None:
+            self.board = np.array(np.random.choice(
+                9, size=(3, 3), replace=False))  # Random
+        else:
+            self.board = initial_state
+        # self.board = np.array([[8, 1, 2], [0, 4, 3], [7, 6, 5]])  # No solution
+        # self.board = np.array([[8, 6, 7], [2, 5, 4], [3, 0, 1]])   # Hardest solution
+        # self.board = np.array([[3, 1, 8], [5, 6, 7], [0, 4, 2]])  # Has solution
         self.empty_square = self.find_empty()
         self.heuristic_config = heuristic_config
 
@@ -21,7 +26,8 @@ class Puzzle:
             for (j, square) in enumerate(row):
                 target = self.correct_position[square]
                 if self.heuristic_config == 'EUC':
-                    to_return += math.sqrt(math.pow(i - target[0], 2) + math.pow(j - target[1], 2))
+                    to_return += math.sqrt(math.pow(i -
+                                           target[0], 2) + math.pow(j - target[1], 2))
                 else:
                     to_return += abs(i - target[0]) + abs(j - target[1])
 
@@ -32,7 +38,9 @@ class Puzzle:
         return 0 <= row <= 2 and 0 <= col <= 2
 
     def copy(self):
-        puzzle = Puzzle()
+        # TODO: deberia pasar la heuristica sino cambia en el medio
+        # puzzle = Puzzle()
+        puzzle = Puzzle(self.board, self.heuristic_config)
         puzzle.board = self.board.copy()
         puzzle.empty_square = self.empty_square
         return puzzle
@@ -49,16 +57,14 @@ class Puzzle:
         for i in range(3):
             for j in range(3):
                 to_return += str(self.board[i][j])
-                # print(self.board[i][j], end='')
             to_return += '\n'
-            # print()
         to_return += '\n'
         return to_return
 
     def is_valid_move(self, from_row, from_col, to_row, to_col):
         return Puzzle.valid_position(from_row, from_col) and Puzzle.valid_position(to_row, to_col) and \
-               self.board[to_row][to_col] == 0 and (
-                       abs(from_row - to_row) + abs(from_col - to_col)) == 1
+            self.board[to_row][to_col] == 0 and (
+            abs(from_row - to_row) + abs(from_col - to_col)) == 1
 
     def move_square(self, from_row, from_col, to_row, to_col):
         if not self.is_valid_move(from_row, from_col, to_row, to_col):

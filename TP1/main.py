@@ -1,5 +1,6 @@
 import json
 import sys
+import numpy
 from solvers.dfs_solver import DFSsolver
 from solvers.bfs_solver import BFSsolver
 from solvers.vdfs_solver import VDFSsolver
@@ -24,29 +25,36 @@ with open(sys.argv[1], 'r') as config_file:
     heu = 'EUC'
     if 'heu' in config:
         heu = config['heu']
+
     limit = 20
     if 'limit' in config:
         limit = config['limit']
 
+    init_state = None
+    if 'initial_state' in config:
+        init_state_array = [int(x) for x in config['initial_state']]
+        init_state = numpy.array([
+            [init_state_array[0], init_state_array[1], init_state_array[2]],
+            [init_state_array[3], init_state_array[4], init_state_array[5]],
+            [init_state_array[6], init_state_array[7], init_state_array[8]]
+        ])
+
     if config['algo'] == 'BPA':
-        s = BFSsolver(Puzzle())
+        s = BFSsolver(Puzzle(init_state))
     elif config['algo'] == 'BPP':
-        s = DFSsolver(Puzzle())
+        s = DFSsolver(Puzzle(init_state))
     elif config['algo'] == 'LOCAL':
-        s = LocalHeuristicSolver(Puzzle(heu))
+        s = LocalHeuristicSolver(Puzzle(init_state, heu))
     elif config['algo'] == 'GLOBAL':
-        s = GlobalHeuristicSolver(Puzzle(heu))
+        s = GlobalHeuristicSolver(Puzzle(init_state, heu))
     elif config['algo'] == 'A*':
-        s = AStarSolver(Puzzle(heu))
+        s = AStarSolver(Puzzle(init_state, heu))
     elif config['algo'] == 'BPPV':
-        if 'limit' in config:
-            limit = config['limit']
-        s = VDFSsolver(Puzzle(), limit)
+        s = VDFSsolver(Puzzle(init_state), limit)
     else:
         print('Wrong algorithm inserted')
         config_file.close()
         exit()
-
     config_file.close()
 
 solution = s.solve()
