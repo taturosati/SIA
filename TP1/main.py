@@ -21,12 +21,10 @@ with open(sys.argv[1], 'r') as config_file:
         config_file.close()
         exit()
 
-    sys.setrecursionlimit(10**6)
-
     heu = 'EUC'
     if 'heu' in config:
         heu = config['heu']
-    limit = 10000
+    limit = 20
     if 'limit' in config:
         limit = config['limit']
 

@@ -37,11 +37,7 @@ class Solver:
                 self.explored[str(curr_state.get_board())] = curr_node  # TODO stringify de otra manera
 
             if curr_state.is_solution():
-                print("--- %s seconds ---" % (time.time() - start_time))
-                print('Solved!')
-                print('Cost: ' + str(curr_node.get_cost()))
-                print('Depth: ' + str(curr_node.get_cost()))
-                self.print_stats()
+                self.print_stats(start_time, curr_node)
                 solution = []
                 while curr_node is not None:
                     solution.insert(0, curr_node)
@@ -57,11 +53,16 @@ class Solver:
                 if str(new_node.get_state().get_board()) not in self.explored:
                     bisect.insort(self.frontier, new_node)
 
-        print("--- %s seconds ---" % (time.time() - start_time))
-        print('There is no solution')
-        self.print_stats()
+        self.print_stats(start_time)
         return []
 
-    def print_stats(self):
+    def print_stats(self, start_time, node = None):
+        print("--- %s Seconds ---" % (time.time() - start_time))
+        if node is None:
+            print('There is no solution')
+        else:
+            print('Solved!')
+            print('Cost: ' + str(node.get_cost()))
+            print('Depth: ' + str(node.get_cost()))
         print('Frontier nodes: ' + str(len(self.frontier)))
         print('Explored nodes: ' + str(len(self.explored)))

@@ -9,8 +9,9 @@ class Puzzle:
 
     def __init__(self, heuristic_config='EUC'):
         self.board = np.array(np.random.choice(9, size=(3, 3), replace=False))  # Random
-        # self.board = np.array([[8, 1, 2], [0, 4, 3], [7, 6, 5]])  # No solution
-        # self.board = np.array([[3, 1, 8], [5, 6, 7], [0, 4, 2]])  # Has solution
+        #self.board = np.array([[8, 1, 2], [0, 4, 3], [7, 6, 5]])  # No solution
+        #self.board = np.array([[8, 6, 7], [2, 5, 4], [3, 0, 1]])   # Hardest solution
+        #self.board = np.array([[3, 1, 8], [5, 6, 7], [0, 4, 2]])  # Has solution
         self.empty_square = self.find_empty()
         self.heuristic_config = heuristic_config
 
