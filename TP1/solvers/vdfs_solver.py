@@ -11,7 +11,7 @@ class VDFSsolver(Solver):
 
     @staticmethod
     def node_comparator(n1, n2):
-        return n1.get_cost() < n2.get_cost()
+        return n1.get_cost() > n2.get_cost()
 
     def solve(self):
         start_time = time.time()
