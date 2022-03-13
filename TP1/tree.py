@@ -1,6 +1,4 @@
 import numpy as np
-import hashlib
-
 class Tree:
     def __init__(self, initial_state, comparator):
         self.root = self.Node(initial_state, np.array([]), None)
@@ -36,10 +34,10 @@ class Tree:
             return self.parent
 
         def __key(self):
-            return (self.state.get_board())
+            return str(self.state.get_board())
 
         def __hash__(self):
-            return hash(hashlib.sha1(self.__key()).hexdigest())
+            return hash(self.__key())
             
         def __eq__(self, other):
             if isinstance(other, self.__class__):

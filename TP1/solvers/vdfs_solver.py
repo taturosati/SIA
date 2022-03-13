@@ -32,10 +32,7 @@ class VDFSsolver(Solver):
             curr_node = self.frontier.pop(0)
             curr_state = curr_node.get_state()
             
-            if str(curr_state.get_board()) not in self.explored:
-                self.explored[str(curr_state.get_board())] = curr_node  # TODO stringify de otra manera
-            else: 
-                self.explored[str(curr_state.get_board())] = curr_node
+            self.explored[str(curr_state.get_board())] = curr_node
 
             if curr_state.is_solution():     
                 self.solution = []
@@ -50,9 +47,6 @@ class VDFSsolver(Solver):
                     self.prev_limit = self.limit
                     self.limit = int((aux + len(self.solution) - 1)/2)
                     self.frontier = [n for n in self.frontier if n.get_cost() <= self.limit]
-                    for n in limit_list:
-                        bisect.insort(self.frontier, n)
-
                     return self.vdfs_solve()
                 
                 return self.solution
