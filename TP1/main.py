@@ -34,9 +34,9 @@ with open(sys.argv[1], 'r') as config_file:
     if 'initial_state' in config:
         init_state_array = [int(x) for x in config['initial_state']]
         init_state = numpy.array([
-            [init_state_array[0], init_state_array[1], init_state_array[2]],
-            [init_state_array[3], init_state_array[4], init_state_array[5]],
-            [init_state_array[6], init_state_array[7], init_state_array[8]]
+            init_state_array[0:3],
+            init_state_array[3:6],
+            init_state_array[6:9]
         ])
 
     if config['algo'] == 'BPA':
