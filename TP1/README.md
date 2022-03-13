@@ -13,9 +13,9 @@ Se tiene una grilla de 3 x 3, donde hay 8 piezas, numeradas del 1 al 8, en una c
 
 Cabe destacar que algunas configuraciones iniciales no tienen solución
 ## Dependencias
-En caso de no contar con la dependencia de numpy ejecutar el siguiente comando
+Instalar las dependencias necesarias mediante el siguiente comando
 	 
-	 pip install numpy
+	 pip install -r dependencies.txt
 	
 ## Ejecución
 1) Descargar el repositorio https://github.com/srosati/SIA.git en la carpeta deseada
