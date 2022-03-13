@@ -1,7 +1,7 @@
 import numpy as np
 import bisect
 
-from tree import Tree
+from models.tree import Tree
 import time
 
 
@@ -41,9 +41,8 @@ class Solver:
             curr_node = self.frontier.pop(0)
             curr_state = curr_node.get_state()
 
-            if str(curr_state.get_board()) not in self.explored:
-                # TODO stringify de otra manera
-                self.explored[str(curr_state.get_board())] = curr_node
+            if curr_state not in self.explored: # Semantically, state != node
+                self.explored[curr_state] = curr_node
 
             if curr_state.is_solution():
                 self.print_stats(start_time, curr_node)
@@ -59,7 +58,7 @@ class Solver:
                 empty_row, empty_col = new_puzzle.get_empty_square_position()
                 new_puzzle.move_square(move[0], move[1], empty_row, empty_col)
                 new_node = self.tree.insert(curr_node, new_puzzle)
-                if str(new_node.get_state().get_board()) not in self.explored:
+                if new_node.get_state() not in self.explored:
                     bisect.insort(self.frontier, new_node)
 
         self.print_stats(start_time)
@@ -75,7 +74,8 @@ class Solver:
             print('Depth: ' + str(node.get_cost()))
         print('Frontier nodes: ' + str(len(self.frontier)))
         print('Explored nodes: ' + str(len(self.explored)))
-
+        if node is not None: print('The solution is in solution.txt')
+        
     # source: https://www.geeksforgeeks.org/check-instance-8-puzzle-solvable/
     # A utility function to count
     # inversions in given array 'arr[]'

@@ -32,7 +32,7 @@ class VDFSsolver(Solver):
             curr_node = self.frontier.pop(0)
             curr_state = curr_node.get_state()
             
-            self.explored[str(curr_state.get_board())] = curr_node
+            self.explored[curr_state] = curr_node
 
             if curr_state.is_solution():     
                 self.solution = []
@@ -57,8 +57,8 @@ class VDFSsolver(Solver):
                 empty_row, empty_col = new_puzzle.get_empty_square_position()
                 new_puzzle.move_square(move[0], move[1], empty_row, empty_col)
                 new_node = self.tree.insert(curr_node, new_puzzle)
-                if (str(new_node.get_state().get_board()) not in self.explored or \
-                    new_node.get_cost() < self.explored[str(new_node.get_state().get_board())].get_cost()) and \
+                if (new_node.get_state() not in self.explored or \
+                    new_node.get_cost() < self.explored[new_node.get_state()].get_cost()) and \
                     new_node.get_cost() < self.limit:
                     bisect.insort(self.frontier, new_node)
                 elif new_node.get_cost() == self.limit:

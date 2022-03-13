@@ -34,7 +34,7 @@ class Tree:
             return self.parent
 
         def __key(self):
-            return str(self.state.get_board())
+            return self.state
 
         def __hash__(self):
             return hash(self.__key())

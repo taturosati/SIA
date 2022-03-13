@@ -8,7 +8,7 @@ from solvers.global_heuristic_solver import GlobalHeuristicSolver
 from solvers.local_heuristic_solver import LocalHeuristicSolver
 from solvers.a_star_solver import AStarSolver
 
-from puzzle import Puzzle
+from models.puzzle import Puzzle
 
 if len(sys.argv) < 2 or not str(sys.argv[1]).endswith('.json'):
     print('Please enter the configuration file (e.g. python3 main.py config.json)')
@@ -24,20 +24,35 @@ with open(sys.argv[1], 'r') as config_file:
 
     heu = 'EUC'
     if 'heu' in config:
-        heu = config['heu']
+        if config['heu'] != 'EUC' or config['heu'] != 'MAN' or config['heu'] != 'OOP':
+            heu = config['heu']
+        else:
+            print('Wrong algorithm')
+            config_file.close()
+            exit()
 
     limit = 20
     if 'limit' in config:
-        limit = config['limit']
+        if config['limit'].isnumeric():
+            limit = config['limit']
+        else:
+            print('Wrong limit')
+            config_file.close()
+            exit()
 
     init_state = None
     if 'initial_state' in config:
-        init_state_array = [int(x) for x in config['initial_state']]
-        init_state = numpy.array([
-            init_state_array[0:3],
-            init_state_array[3:6],
-            init_state_array[6:9]
-        ])
+        if len(config['initial_state']) == 9 and config['initial_state'].isnumeric():
+            init_state_array = [int(x) for x in config['initial_state']]
+            init_state = numpy.array([
+                init_state_array[0:3],
+                init_state_array[3:6],
+                init_state_array[6:9]
+            ])
+        else:
+            print('Wrong configuration')
+            config_file.close()
+            exit()
 
     if config['algo'] == 'BPA':
         s = BFSsolver(Puzzle(init_state))
