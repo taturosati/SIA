@@ -33,7 +33,7 @@ with open(sys.argv[1], 'r') as config_file:
 
     limit = 20
     if 'limit' in config:
-        if config['limit'].isnumeric():
+        if config['limit'] > 0:
             limit = config['limit']
         else:
             print('Wrong limit')
@@ -54,23 +54,32 @@ with open(sys.argv[1], 'r') as config_file:
             config_file.close()
             exit()
 
-    if config['algo'] == 'BPA':
+    algo = config['algo']
+    heuristics = {"MAN": "Manhattan", "EUC": "Euclidean", "OOP": "Out of Position"}
+
+    if algo == 'BPA':
         s = BFSsolver(Puzzle(init_state))
-    elif config['algo'] == 'BPP':
+    elif algo == 'BPP':
         s = DFSsolver(Puzzle(init_state))
-    elif config['algo'] == 'LOCAL':
-        s = LocalHeuristicSolver(Puzzle(init_state, heu))
-    elif config['algo'] == 'GLOBAL':
-        s = GlobalHeuristicSolver(Puzzle(init_state, heu))
-    elif config['algo'] == 'A*':
-        s = AStarSolver(Puzzle(init_state, heu))
-    elif config['algo'] == 'BPPV':
+    elif algo == 'BPPV':
+        print("Limit:", limit)
         s = VDFSsolver(Puzzle(init_state), limit)
+    elif algo == 'LOCAL':
+        print("Heuristic:", heuristics[heu])
+        s = LocalHeuristicSolver(Puzzle(init_state, heu))
+    elif algo == 'GLOBAL':
+        print("Heuristic:", heuristics[heu])
+        s = GlobalHeuristicSolver(Puzzle(init_state, heu))
+    elif algo == 'A*':
+        print("Heuristic:", heuristics[heu])
+        s = AStarSolver(Puzzle(init_state, heu))
     else:
         print('Wrong algorithm inserted')
         config_file.close()
         exit()
     config_file.close()
+
+print("Alorithm:", algo)
 
 solution = s.solve()
 

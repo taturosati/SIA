@@ -1,0 +1,5 @@
+{ 
+  "algo": "A*",
+  "initial_state": "867254301",
+  "heu":"MAN"
+}

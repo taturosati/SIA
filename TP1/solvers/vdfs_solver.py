@@ -15,6 +15,13 @@ class VDFSsolver(Solver):
 
     def solve(self):
         start_time = time.time()
+        print("Solving for puzzle:")
+        self.tree.get_root().get_state().print_board()
+        print()
+        if not self.is_solvable(self.tree.get_root().get_state().get_board()):
+            print("--- %s Seconds ---" % (time.time() - start_time))
+            print("There is no POSSIBLE solution for this initial configuration")
+            return []
         bisect.insort(self.frontier, self.tree.get_root())
         self.vdfs_solve()
         if len(self.solution) == 0:
