@@ -4,8 +4,17 @@ import numpy as np
 
 from individual import Individual
 
+
 class Optimizer:
-    def __init__(self, possible_elements: array, population_size: int, max_elements: int, max_weight: int, selector, crosser):
+    def __init__(
+        self,
+        possible_elements: array,
+        population_size: int,
+        max_elements: int,
+        max_weight: int,
+        selector,
+        crosser,
+    ):
         self.possible_elements = possible_elements
         self.population = np.empty(population_size, Individual)
         self.population_size = population_size
@@ -16,37 +25,66 @@ class Optimizer:
         self.generations = 0
         self.init_population()
 
-    def init_population(self): 
+    def init_population(self):
         for i in range(self.population_size):
             self.population[i] = Individual(len(self.possible_elements))
-            self.population[i].calculate_fitness(self.possible_elements, self.max_elements, self.max_weight)
-    
+            ##self.population[i].calculate_fitness(self.possible_elements, self.max_elements, self.max_weight)
+
     def optimize(self):
+        absolute_max_weight = 0
+        for el in self.possible_elements:
+            absolute_max_weight += el["weight"]
+
         while not self.has_to_stop():
             self.generations += 1
             for individual in self.population:
-                individual.calculate_fitness(self.possible_elements, self.max_elements, self.max_weight)
+                individual.calculate_fitness(
+                    self.possible_elements,
+                    self.max_elements,
+                    self.max_weight,
+                    absolute_max_weight,
+                )
 
             children = []
             while len(children) < self.population_size:
-                [first, second] = np.random.choice(self.population, 2, replace=False)
-                [first_child, second_child] = first.children(second, self.crosser)
+                [first_parent, second_parent] = np.random.choice(
+                    self.population, 2, replace=False
+                )
+                [first_child, second_child] = first_parent.children(
+                    second_parent, self.crosser
+                )
                 first_child.mutate()
-                first_child.calculate_fitness(self.possible_elements, self.max_elements, self.max_weight)
+                first_child.calculate_fitness(
+                    self.possible_elements,
+                    self.max_elements,
+                    self.max_weight,
+                    absolute_max_weight,
+                )
                 second_child.mutate()
-                second_child.calculate_fitness(self.possible_elements, self.max_elements, self.max_weight)
+                second_child.calculate_fitness(
+                    self.possible_elements,
+                    self.max_elements,
+                    self.max_weight,
+                    absolute_max_weight,
+                )
                 children.append(first_child)
                 children.append(second_child)
 
-            for n in self.population:
+            for n in self.population:  # 2*size
                 children.append(n)
 
-            children = self.selector(children, self.population_size)
+            children = self.selector(children, self.population_size, self.generations)
             for idx, individual in enumerate(children):
                 self.population[idx] = individual
 
+        for individual in self.population:
+            individual.calculate_fitness(
+                self.possible_elements,
+                self.max_elements,
+                self.max_weight,
+                absolute_max_weight,
+            )
         print([n.fitness for n in self.population])
 
     def has_to_stop(self):
-        return self.generations > 500 and len([c for c in self.population if c.fitness > 0]) > 0
-                
+        return self.generations > 500
