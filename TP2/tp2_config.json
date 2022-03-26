@@ -1,4 +1,6 @@
 {
-  "selection": "roulette",
-  "cross": "uniform"
+  "selection": "truncate",
+  "trunc": 90,
+  "cross": "uniform",
+  "multiple_cross_n": 5
 }
