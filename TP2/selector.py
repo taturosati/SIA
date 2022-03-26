@@ -3,7 +3,7 @@ from random import random
 import numpy as np
 
 
-class Selector: 
+class Selector:
     @staticmethod
     def direct_select(population, size):
         population = sorted(population, key=lambda x: x.fitness, reverse=True)
@@ -39,13 +39,13 @@ class Selector:
         new_generation = []
         f = lambda elem: -elem.fitness
         temp = np.argsort([f(ind) for ind in population])
-        print([-f(ind) for ind in population[0:5]])
-        print([-f(ind) for ind in population[0:5]])
+        # print([-f(ind) for ind in population[0:5]])
+        # print([-f(ind) for ind in population[0:5]])
         ranks = np.empty_like(temp)
         ranks[temp] = np.arange(len(temp))
-        print(ranks[0:5])
+        # print(ranks[0:5])
 
-        print("---------------")
+        # print("---------------")
         probabilities = []
         for i in range(len(population)):
             probabilities.append((size * 2 - ranks[i]) / (size * 2))
@@ -108,7 +108,7 @@ class Selector:
     @staticmethod
     def truncate_select(
         population, size, k
-    ):  #TODO: ese k habria que verificar que es menor a n?
+    ):  # TODO: ese k habria que verificar que es menor a n?
         population = sorted(population, key=lambda x: x.fitness, reverse=True)[
             : len(population) + 1 - k
         ]
