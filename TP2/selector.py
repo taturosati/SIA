@@ -108,7 +108,7 @@ class Selector:
     @staticmethod
     def truncate_select(
         population, size, k
-    ):  # TODO: ese k habria que verificar que es menor a n?
+    ):
         population = sorted(population, key=lambda x: x.fitness, reverse=True)[
             : len(population) + 1 - k
         ]

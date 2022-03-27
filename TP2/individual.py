@@ -3,8 +3,7 @@ import random
 
 
 class Individual:
-    # mutation_probability = 0.05  ##TODO: parametrizar
-
+    
     def __init__(self, size: int, mutation_probability: int, randomize=True):
         if randomize:
             self.genome = np.random.randint(2, size=size)
@@ -12,7 +11,7 @@ class Individual:
             self.genome = np.empty(size, int)
         self.mutation_probability = mutation_probability
 
-    def children(self, other, crosser):
+    def cross(self, other, crosser):
         return crosser(self, other)
 
     def mutate(self):
@@ -26,7 +25,7 @@ class Individual:
         possible_elements,
         max_elements: int,
         max_weight: int,
-        absolute_max_weight: int
+        absolute_max_weight: int,
     ):
         elements = 0
         weight = 0

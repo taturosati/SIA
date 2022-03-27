@@ -7,10 +7,9 @@ from selector import Selector
 
 class Configurer:
     @staticmethod
-    def configure(file_name: str, population_size: int):
+    def configure(file_name: str, genome_size: int):
         with open(file_name, "r") as config_file:
             config = json.load(config_file)
-            ## TODO: pasar todo a un archivo de configuración
 
             gen = 500
             if "gen" in config and int(config["gen"]) >= 500:
@@ -21,12 +20,6 @@ class Configurer:
             if "p" in config and 0 < config["p"] <= 1:
                 p = config["p"]
             print("Mutation probability P:", p)
-            # a = 0.01
-            # if "a" in config and 0 < config["a"] <= 1:
-            #     a = config["a"]
-            # tita = 0.01
-            # if "o" in config and 0 < config["tita"] <= 1:
-            #     tita = config["tita"]
 
             print("Selection method: ", end="")
             selector = lambda population, size: Selector.direct_select(population, size)
@@ -76,7 +69,7 @@ class Configurer:
                     )
                 elif config["selection"] == "truncate":
                     print("truncate", end=" ")
-                    if "trunc" in config and 0 < trunc <= population_size:
+                    if "trunc" in config and 0 < trunc <= genome_size:
                         trunc = config["trunc"]
                     print("[ truncate_k =", trunc, "]")
                     selector = lambda population, size: Selector.truncate_select(
@@ -85,7 +78,9 @@ class Configurer:
                 else:
                     raise "Invalid selection method"
 
-            crosser = lambda first, second: Crosser.simple_cross(first, second)
+            crosser = lambda first, second: Crosser.simple_cross(
+                first, second, genome_size
+            )
             multiple_cross_n = 2
             if "cross" in config:
                 print("Cross method: ", end="")
@@ -98,11 +93,13 @@ class Configurer:
                         multiple_cross_n = config["multiple_cross_n"]
                     print("[ n =", multiple_cross_n, "]")
                     crosser = lambda first, second: Crosser.multiple_cross(
-                        first, second, multiple_cross_n
+                        first, second, multiple_cross_n, genome_size
                     )
                 elif config["cross"] == "uniform":
                     print("uniform")
-                    crosser = lambda first, second: Crosser.uniform_cross(first, second)
+                    crosser = lambda first, second: Crosser.uniform_cross(
+                        first, second, genome_size
+                    )
                 else:
                     config_file.close()
                     raise "Invalid cross method"

@@ -5,8 +5,7 @@ import random
 
 class Crosser:
     @staticmethod
-    def simple_cross(first_parent, second_parent):
-        size = len(first_parent.genome)  # TODO ver de recibirlo
+    def simple_cross(first_parent, second_parent, size):
         first_child = Individual(size, first_parent.get_mutation_probability(), False)
         second_child = Individual(size, second_parent.get_mutation_probability(), False)
         p = random.randint(0, size)
@@ -21,8 +20,7 @@ class Crosser:
         return [first_child, second_child]
 
     @staticmethod
-    def multiple_cross(first_parent, second_parent, n):
-        size = len(first_parent.genome)  # TODO ver de recibirlo
+    def multiple_cross(first_parent, second_parent, n, size):
         first_child = Individual(size, first_parent.get_mutation_probability(), False)
         second_child = Individual(size, second_parent.get_mutation_probability(), False)
         p = sorted(random.sample(range(1, size), n))
@@ -40,8 +38,7 @@ class Crosser:
         return [first_child, second_child]
 
     @staticmethod
-    def uniform_cross(first_parent, second_parent):
-        size = len(first_parent.genome)  # TODO ver de recibirlo
+    def uniform_cross(first_parent, second_parent, size):
         first_child = Individual(size, first_parent.get_mutation_probability(), False)
         second_child = Individual(size, second_parent.get_mutation_probability(), False)
 

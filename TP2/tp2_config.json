@@ -1,4 +1,4 @@
 {
-	"selection": "direct",
-	"cross": "simple"
+  "selection": "tournament",
+  "cross": "uniform"
 }

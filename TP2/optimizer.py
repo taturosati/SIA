@@ -31,7 +31,7 @@ class Optimizer:
         self.init_population()
         self.same_fitness_counter = 0
         self.last_fitness = 0
-        self.plot_array = []
+        self.plot_array = {"max": [], "avg": []}
 
     def init_population(self):
         for i in range(self.population_size):
@@ -41,7 +41,7 @@ class Optimizer:
             ##self.population[i].calculate_fitness(self.possible_elements, self.max_elements, self.max_weight)
 
     def optimize(self):
-        start_time = time.time()
+        self.start_time = time.time()
         absolute_max_weight = 0
         for el in self.possible_elements:
             absolute_max_weight += el["weight"]
@@ -61,7 +61,7 @@ class Optimizer:
                 [first_parent, second_parent] = np.random.choice(
                     self.population, 2, replace=False
                 )
-                [first_child, second_child] = first_parent.children(
+                [first_child, second_child] = first_parent.cross(
                     second_parent, self.crosser
                 )
                 first_child.mutate()
@@ -84,27 +84,23 @@ class Optimizer:
             for n in self.population:  # 2*size
                 children.append(n)
 
-            children = self.selector(
-                children, self.population_size
-            )  ##, self.gen_n)
+            children = self.selector(children, self.population_size)  ##, self.gen_n)
             for idx, individual in enumerate(children):
                 self.population[idx] = individual
-            
+
             best_fitness = max([ind.fitness for ind in self.population])
             if best_fitness == self.last_fitness:
                 self.same_fitness_counter += 1
             else:
                 self.same_fitness_counter = 0
+            self.plot_array["max"].append(best_fitness)
+            self.plot_array["avg"].append(
+                average([ind.fitness for ind in self.population])
+            )
 
-            self.plot_array.append([self.gen_n, best_fitness, "max"])
-            self.plot_array.append([self.gen_n, int(average([ind.fitness for ind in self.population])), "avg"])
-            
             self.last_fitness = best_fitness
-            # print(self.same_fitness_counter)
 
-            
-        
-        print("--- %s Seconds ---" % (time.time() - start_time))
+        print("--- %s Seconds ---" % (time.time() - self.start_time))
         for individual in self.population:
             individual.calculate_fitness(
                 self.possible_elements,
@@ -112,7 +108,7 @@ class Optimizer:
                 self.max_weight,
                 absolute_max_weight,
             )
-        
+
         best_fitness = 0
         best_fitness_idx = -1
         for idx, ind in enumerate(self.population):
@@ -121,11 +117,12 @@ class Optimizer:
                 best_fitness_idx = idx
 
         print(self.population[best_fitness_idx])
-    
+
     def get_plot_array(self):
         return self.plot_array
 
-
     # TODO: Maybe it has to be an or instead of an and
     def has_to_stop(self):
-        return self.gen_n > self.min_generations and self.same_fitness_counter > 5
+        return self.gen_n > self.min_generations and (
+            self.same_fitness_counter > 5 or time.time() - self.start_time > 60
+        )

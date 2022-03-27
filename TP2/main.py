@@ -12,8 +12,6 @@ if len(sys.argv) == 1 or not str(sys.argv[1]).endswith(".json"):
 # with open(sys.argv[1], "r") as config_file:
 #     config = json.load(config_file)
 
-configuration = Configurer.configure(sys.argv[1], 500)
-
 possible_elements = []
 with open("./data.txt", "r") as data_file:
     [max_elements, max_weight] = [int(n) for n in data_file.readline().split()]
@@ -22,7 +20,9 @@ with open("./data.txt", "r") as data_file:
         possible_elements.append({"gains": gains, "weight": weight})
     data_file.close()
 
-print(max_elements, max_weight)
+configuration = Configurer.configure(sys.argv[1], len(possible_elements))
+
+# print(max_elements, max_weight)
 # print("configuration: ", gen, p, o, a, cross, selection)
 
 optimizer = Optimizer(
@@ -36,4 +36,5 @@ optimizer = Optimizer(
     configuration["p"],
 )
 optimizer.optimize()
-plot(np.array(optimizer.get_plot_array()))
+print(len(optimizer.get_plot_array()["max"]))
+plot(optimizer.get_plot_array())
