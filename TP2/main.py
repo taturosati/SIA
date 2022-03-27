@@ -1,3 +1,5 @@
+import numpy as np
+from plotter import plot
 from configurer import Configurer
 from selector import Selector
 from optimizer import Optimizer
@@ -34,3 +36,4 @@ optimizer = Optimizer(
     configuration["p"],
 )
 optimizer.optimize()
+plot(np.array(optimizer.get_plot_array()))

@@ -1,6 +1,4 @@
 {
-  "selection": "truncate",
-  "trunc": 90,
-  "cross": "uniform",
-  "multiple_cross_n": 5
+	"selection": "direct",
+	"cross": "simple"
 }

@@ -26,7 +26,7 @@ class Individual:
         possible_elements,
         max_elements: int,
         max_weight: int,
-        absolute_max_weight: int,
+        absolute_max_weight: int
     ):
         elements = 0
         weight = 0

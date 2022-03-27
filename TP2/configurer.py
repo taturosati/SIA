@@ -15,10 +15,12 @@ class Configurer:
             gen = 500
             if "gen" in config and int(config["gen"]) >= 500:
                 gen = int(config["gen"])
+            print("Min gen simulation:", gen)
 
             p = 0.01
             if "p" in config and 0 < config["p"] <= 1:
                 p = config["p"]
+            print("Mutation probability P:", p)
             # a = 0.01
             # if "a" in config and 0 < config["a"] <= 1:
             #     a = config["a"]
@@ -26,7 +28,7 @@ class Configurer:
             # if "o" in config and 0 < config["tita"] <= 1:
             #     tita = config["tita"]
 
-            print("Selection: ", end="")
+            print("Selection method: ", end="")
             selector = lambda population, size: Selector.direct_select(population, size)
             t0 = 80000
             tf = 60000

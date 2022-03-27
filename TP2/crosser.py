@@ -10,12 +10,13 @@ class Crosser:
         first_child = Individual(size, first_parent.get_mutation_probability(), False)
         second_child = Individual(size, second_parent.get_mutation_probability(), False)
         p = random.randint(0, size)
-        for i in range(p):
-            first_child.genome[i] = first_parent.genome[i]
-            second_child.genome[i] = second_parent.genome[i]
-        for i in range(p + 1, size):
-            first_child.genome[i] = second_parent.genome[i]
-            second_child.genome[i] = first_parent.genome[i]
+        for i in range(size):
+            if i < p:
+                first_child.genome[i] = first_parent.genome[i]
+                second_child.genome[i] = second_parent.genome[i]
+            else:
+                first_child.genome[i] = second_parent.genome[i]
+                second_child.genome[i] = first_parent.genome[i]
 
         return [first_child, second_child]
 
