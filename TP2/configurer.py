@@ -19,12 +19,12 @@ class Configurer:
             p = 0.01
             if "p" in config and 0 < config["p"] <= 1:
                 p = config["p"]
-            a = 0.01
-            if "a" in config and 0 < config["a"] <= 1:
-                a = config["a"]
-            tita = 0.01
-            if "o" in config and 0 < config["tita"] <= 1:
-                tita = config["tita"]
+            # a = 0.01
+            # if "a" in config and 0 < config["a"] <= 1:
+            #     a = config["a"]
+            # tita = 0.01
+            # if "o" in config and 0 < config["tita"] <= 1:
+            #     tita = config["tita"]
 
             print("Selection: ", end="")
             selector = lambda population, size: Selector.direct_select(population, size)
@@ -106,4 +106,4 @@ class Configurer:
                     raise "Invalid cross method"
 
         config_file.close()
-        return [gen, selector, crosser]
+        return {"gen": gen, "selector": selector, "crosser": crosser, "p": p}

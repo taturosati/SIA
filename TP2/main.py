@@ -23,14 +23,14 @@ with open("./data.txt", "r") as data_file:
 print(max_elements, max_weight)
 # print("configuration: ", gen, p, o, a, cross, selection)
 
-# TODO: read what selector to use from config
 optimizer = Optimizer(
     possible_elements,
     500,
     max_elements,
     max_weight,
-    configuration[0],
-    configuration[1],
-    configuration[2],
+    configuration["gen"],
+    configuration["selector"],
+    configuration["crosser"],
+    configuration["p"],
 )
 optimizer.optimize()

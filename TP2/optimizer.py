@@ -17,6 +17,7 @@ class Optimizer:
         gen: int,
         selector,
         crosser,
+        mutation_probability,
     ):
         self.possible_elements = possible_elements
         self.population = np.empty(population_size, Individual)
@@ -26,12 +27,15 @@ class Optimizer:
         self.selector = selector
         self.crosser = crosser
         self.gen = gen
+        self.mutation_probability = mutation_probability
         self.generations = 0
         self.init_population()
 
     def init_population(self):
         for i in range(self.population_size):
-            self.population[i] = Individual(len(self.possible_elements))
+            self.population[i] = Individual(
+                len(self.possible_elements), self.mutation_probability
+            )
             ##self.population[i].calculate_fitness(self.possible_elements, self.max_elements, self.max_weight)
 
     def optimize(self):
