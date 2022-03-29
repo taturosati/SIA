@@ -39,19 +39,12 @@ class Selector:
         new_generation = []
         f = lambda elem: elem.fitness
         temp = np.argsort([f(ind) for ind in population])
-        # print([-f(ind) for ind in population[0:5]])
-        # print([-f(ind) for ind in population[0:5]])
         ranks = np.empty_like(temp)
         ranks[temp] = np.arange(len(temp))
         total_fitness = size * ((size * 2) + 1)
-        # print(ranks[0:5])
-
-        # print("---------------")
         probabilities = []
         for i in range(len(population)):
             probabilities.append((ranks[i] + 1) / total_fitness)
-        print("Total prob:")
-        print(sum(ranks) / total_fitness)
 
         for _ in range(size):
             r = np.random.uniform()
@@ -61,6 +54,7 @@ class Selector:
                 if range_begin <= r <= range_begin + prob:
                     insert = idx
                     break
+
                 range_begin += prob
 
             new_generation.append(population[insert])

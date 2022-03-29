@@ -28,17 +28,17 @@ class Optimizer:
         self.min_generations = min_generations
         self.mutation_probability = mutation_probability
         self.gen_n = 0
-        self.init_population()
         self.same_fitness_counter = 0
         self.last_fitness = 0
         self.plot_array = {"max": [], "avg": []}
+        self.init_population()
+
 
     def init_population(self):
         for i in range(self.population_size):
             self.population[i] = Individual(
                 len(self.possible_elements), self.mutation_probability
             )
-            ##self.population[i].calculate_fitness(self.possible_elements, self.max_elements, self.max_weight)
 
     def optimize(self):
         self.start_time = time.time()
@@ -116,13 +116,15 @@ class Optimizer:
                 best_fitness = ind.fitness
                 best_fitness_idx = idx
 
-        print(self.population[best_fitness_idx])
+        print("Optimized solution:", self.population[best_fitness_idx])
+        print("Optimized solution benefit:", self.population[best_fitness_idx].gains)
+        print("Optimized solution weight:", self.population[best_fitness_idx].weight)
 
     def get_plot_array(self):
         return self.plot_array
 
     # TODO: Maybe it has to be an or instead of an and
     def has_to_stop(self):
-        return self.gen_n > self.min_generations and (
-            self.same_fitness_counter > 5 or time.time() - self.start_time > 60
+        return any(ind.is_valid() for ind in self.population) and self.gen_n > self.min_generations and (
+            self.same_fitness_counter > 5 #or time.time() - self.start_time > 60
         )

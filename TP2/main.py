@@ -36,5 +36,4 @@ optimizer = Optimizer(
     configuration["p"],
 )
 optimizer.optimize()
-print(len(optimizer.get_plot_array()["max"]))
-plot(optimizer.get_plot_array())
+plot(optimizer.get_plot_array(), "roulette - uniform")

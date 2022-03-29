@@ -1,22 +1,8 @@
-from turtle import color
 import numpy as np
 import matplotlib.pyplot as plt
-import matplotlib.ticker as ticker
 
 
-# x1 = [1,2,3,4,5]
-# y1 = [3,5,4,7,3]
-# x2 = [1,2,3,4,5]
-# y2 = [2,4,3,5,3]
-
-# # plot lines
-# plt.plot(x1, y1, label = "max")
-# plt.plot(x2, y2, label = "avg")
-# plt.legend()
-# plt.show()
-
-
-def plot(arr: dict):
+def plot(arr: dict, title: str):
 
     x = np.array(range(len(arr["max"])))
 
@@ -28,6 +14,6 @@ def plot(arr: dict):
     ax.locator_params("x", nbins=15)
     ax.plot(x, arr["max"], label="max", color="r")
     ax.plot(x, arr["avg"], label="avg", color="b")
-    ax.set_title("Max vs Avg")
+    ax.set_title(title)
     ax.legend()
     plt.show()

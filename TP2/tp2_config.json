@@ -1,4 +1,5 @@
 {
-  "selection": "roulette",
-  "cross": "uniform"
+  "selection": "rank",
+  "cross": "uniform",
+  "p": 0.001
 }

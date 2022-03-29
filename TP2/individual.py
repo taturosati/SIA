@@ -6,9 +6,11 @@ class Individual:
     
     def __init__(self, size: int, mutation_probability: int, randomize=True):
         if randomize:
-            self.genome = np.random.randint(2, size=size)
+            self.genome = np.random.choice([0,1], size=size, p=[0.9,0.1])
         else:
             self.genome = np.empty(size, int)
+
+        self.valid = True
         self.mutation_probability = mutation_probability
 
     def cross(self, other, crosser):
@@ -20,6 +22,9 @@ class Individual:
             if mutate < self.mutation_probability:
                 self.genome[idx] = 1 - n
 
+    def is_valid(self):
+        return self.valid
+
     def calculate_fitness(
         self,
         possible_elements,
@@ -28,19 +33,22 @@ class Individual:
         absolute_max_weight: int,
     ):
         elements = 0
-        weight = 0
-        gains = 0
+        self.weight = 0
+        self.gains = 0
         for idx, n in enumerate(self.genome):
             if n == 1:
                 elements += 1
 
-            weight += n * possible_elements[idx]["weight"]
-            gains += n * possible_elements[idx]["gains"]
+            self.weight += n * possible_elements[idx]["weight"]
+            self.gains += n * possible_elements[idx]["gains"]
+        
 
-        if elements > max_elements or weight > max_weight:
-            self.fitness = gains + absolute_max_weight - weight
+        if elements > max_elements or self.weight > max_weight:
+            self.fitness = absolute_max_weight - self.weight
+            self.valid = False
         else:
-            self.fitness = gains + absolute_max_weight
+            self.fitness = self.gains + absolute_max_weight
+            self.valid = True
 
     def get_mutation_probability(self):
         return self.mutation_probability
