@@ -82,7 +82,7 @@ class Selector:
 
     @staticmethod
     def get_pair(population):
-        return np.random.choice(population, 2, replace=False)
+        return np.random.choice(population, 2, replace=True)
 
     @staticmethod
     def get_winner(pair, u):

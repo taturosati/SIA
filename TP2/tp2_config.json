@@ -1,4 +1,5 @@
 {
-  "selection": "roulette",
-  "cross": "uniform"
+  "selection": "tournament",
+  "cross": "uniform",
+  "u": 1
 }
