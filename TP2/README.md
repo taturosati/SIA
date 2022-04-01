@@ -20,6 +20,19 @@ pip install -r dependencies.txt
 3.  Tener en cuenta que los comandos python y pip tienen su equivalente en mac como python3 y pip3
 4.  Crear un archivo de configuración (El repositorio provee algunas configuraciones de ejemplo)
 5.  Asegurarse de tener en el mismo directorio un archivo llamado data.txt donde la primer linea tiene 2 columnas separadas por un espacio _[capacidad maxima de la mochila] [peso maximo de la mochila]_ y las siguientes representan cada elemento con su beneficio y su peso de la forma _[beneficio] [peso]_
+
+    Ejemplo:
+
+    ```
+    100 995
+    94 485
+    506 326
+    416 248
+    992 421
+    649 322
+    237 795
+    ```
+
 6.  Ejecutar el siguiente comando para iniciar el programa
 
         python main.py [config file]
