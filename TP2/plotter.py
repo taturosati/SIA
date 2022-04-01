@@ -13,6 +13,7 @@ def plot(arr: dict, title: str):
     ax.locator_params("y", nbins=10)
     ax.locator_params("x", nbins=15)
     ax.plot(x, arr["max"], label="max", color="r")
+    ax.plot(x, arr["min"], label="min", color="g")
     ax.plot(x, arr["avg"], label="avg", color="b")
     ax.set_title(title)
     ax.legend()

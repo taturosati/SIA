@@ -36,4 +36,4 @@ optimizer = Optimizer(
     configuration["p"],
 )
 optimizer.optimize()
-plot(optimizer.get_plot_array(), "roulette - uniform")
+plot(optimizer.get_plot_array(), "Truncate - n = 65 - uniform")

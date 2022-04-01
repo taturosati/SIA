@@ -30,7 +30,7 @@ class Optimizer:
         self.gen_n = 0
         self.same_fitness_counter = 0
         self.last_fitness = 0
-        self.plot_array = {"max": [], "avg": []}
+        self.plot_array = {"max": [], "min": [], "avg": []}
         self.init_population()
 
 
@@ -94,6 +94,7 @@ class Optimizer:
             else:
                 self.same_fitness_counter = 0
             self.plot_array["max"].append(best_fitness)
+            self.plot_array["min"].append(min([ind.fitness for ind in self.population]))
             self.plot_array["avg"].append(
                 average([ind.fitness for ind in self.population])
             )
