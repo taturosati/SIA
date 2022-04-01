@@ -1,5 +1,8 @@
 {
-  "selection": "rank",
-  "cross": "uniform",
-  "p": 0.001
+	"selection": "boltzman",
+	"cross": "uniform",
+	"p": 0.001,
+	"t0": 8000,
+	"tf": 6000,
+	"k": 10000
 }

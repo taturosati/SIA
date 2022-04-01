@@ -23,9 +23,9 @@ class Configurer:
 
             print("Selection method: ", end="")
             selector = lambda population, size: Selector.direct_select(population, size)
-            t0 = 80000
-            tf = 60000
-            k = 1
+            t0 = 10000
+            tf = 8000
+            k = 10
             u = 0.6
             trunc = 10
             if "selection" in config:

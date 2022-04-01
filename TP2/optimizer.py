@@ -123,8 +123,7 @@ class Optimizer:
     def get_plot_array(self):
         return self.plot_array
 
-    # TODO: Maybe it has to be an or instead of an and
     def has_to_stop(self):
-        return any(ind.is_valid() for ind in self.population) and self.gen_n > self.min_generations and (
-            self.same_fitness_counter > 5 #or time.time() - self.start_time > 60
+        return self.gen_n > 1000 or (
+            self.gen_n > self.min_generations and any(ind.is_valid() for ind in self.population)
         )
