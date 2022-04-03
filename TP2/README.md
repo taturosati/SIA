@@ -45,7 +45,7 @@ Un archivo en formato .json con los siguientes parametros:
   - direct
   - roulette
   - rank
-  - boltzman
+  - boltzmann
     - _k_
     - _t0_: Temperatura incial
     - _tf_: Temperatura final (<t0)
@@ -85,11 +85,11 @@ Ejemplos:
 }
 ```
 
-- Selección Boltzman con cruza uniforme
+- Selección Boltzmann con cruza uniforme
 
 ```json
 {
-  "selection": "boltzman",
+  "selection": "boltzmann",
   "t0": 10000,
   "tf": 8000,
   "k": 1,

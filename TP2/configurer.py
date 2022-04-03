@@ -50,8 +50,8 @@ class Configurer:
                     selector = lambda population, size: Selector.tournament_select(
                         population, size, u
                     )
-                elif config["selection"] == "boltzman":
-                    print("boltzman", end=" ")
+                elif config["selection"] == "boltzmann":
+                    print("boltzmann", end=" ")
                     if (
                         "k" in config
                         and 0 < k <= 1
@@ -64,7 +64,7 @@ class Configurer:
                         t0 = config["t0"]
                         tf = config["tf"]
                     print("[ k =", k, "| t0 =", t0, "| tf =", tf, "]")
-                    selector = lambda population, size: Selector.boltzman_select(
+                    selector = lambda population, size: Selector.boltzmann_select(
                         population, size, gen, t0, tf, k
                     )
                 elif config["selection"] == "truncate":

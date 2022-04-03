@@ -1,9 +1,23 @@
 import math
-from random import random
 import numpy as np
 
 
 class Selector:
+    @staticmethod
+    def cumulative_prob_select(population, probabilities, size):
+        new_generation = []
+        for _ in range(size):
+            r = np.random.uniform()
+            range_begin = 0
+            insert = -1
+            for idx, prob in enumerate(probabilities):
+                if range_begin <= r <= range_begin + prob:
+                    insert = idx
+                    break
+                range_begin += prob
+            new_generation.append(population[insert])
+        return new_generation
+
     @staticmethod
     def direct_select(population, size):
         population = sorted(population, key=lambda x: x.fitness, reverse=True)
@@ -13,32 +27,17 @@ class Selector:
     def roulette_select(population, size):
         total_fitness = 0
         probabilities = []
-        new_generation = []
         for individual in population:
             total_fitness += individual.fitness
 
         for individual in population:
             probabilities.append(individual.fitness / total_fitness)
 
-        for _ in range(size):
-            r = np.random.uniform()
-            range_begin = 0
-            insert = -1
-            for idx, prob in enumerate(probabilities):
-                if range_begin <= r <= range_begin + prob:
-                    insert = idx
-                    break
-
-                range_begin += prob
-            new_generation.append(population[insert])
-
-        return new_generation
+        return Selector.cumulative_prob_select(population, probabilities, size)
 
     @staticmethod
     def rank_select(population, size):
-        new_generation = []
-        f = lambda elem: elem.fitness
-        temp = np.argsort([f(ind) for ind in population])
+        temp = np.argsort([ind.fitness for ind in population])
         ranks = np.empty_like(temp)
         ranks[temp] = np.arange(len(temp))
         total_fitness = size * ((size * 2) + 1)
@@ -46,21 +45,9 @@ class Selector:
         for i in range(len(population)):
             probabilities.append((ranks[i] + 1) / total_fitness)
 
-        for _ in range(size):
-            r = np.random.uniform()
-            range_begin = 0
-            insert = -1
-            for idx, prob in enumerate(probabilities):
-                if range_begin <= r <= range_begin + prob:
-                    insert = idx
-                    break
+        return Selector.cumulative_prob_select(population, probabilities, size)
 
-                range_begin += prob
-
-            new_generation.append(population[insert])
-        return new_generation
-
-    ## BEGIN TOURNAMENT SELECT
+    # BEGIN TOURNAMENT SELECT
 
     @staticmethod
     def tournament_select(population, size: int, u):
@@ -84,12 +71,10 @@ class Selector:
         r = np.random.uniform()
         return pair[1] if r < u else pair[0]
 
-    ## END TOURNAMENT SELECT
+    # END TOURNAMENT SELECT
 
     @staticmethod
-    def boltzman_select(
-        population, size: int, generation: int, inital_temp, target_temp, k
-    ):
+    def boltzmann_select(population, size: int, generation: int, inital_temp, target_temp, k):
         temp = target_temp + (inital_temp - target_temp) * (math.e ** (-k * generation))
         total_fitness = 0
 
@@ -103,10 +88,6 @@ class Selector:
         return Selector.roulette_select(population, size)
 
     @staticmethod
-    def truncate_select(
-        population, size, k
-    ):
-        population = sorted(population, key=lambda x: x.fitness, reverse=True)[
-            : len(population) + 1 - k
-        ]
+    def truncate_select(population, size, k):
+        population = sorted(population, key=lambda x: x.fitness, reverse=True)[:len(population) + 1 - k]
         return np.random.choice(population, size, replace=True)
