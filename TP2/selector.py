@@ -74,18 +74,20 @@ class Selector:
     # END TOURNAMENT SELECT
 
     @staticmethod
-    def boltzmann_select(population, size: int, generation: int, inital_temp, target_temp, k):
-        temp = target_temp + (inital_temp - target_temp) * (math.e ** (-k * generation))
+    def boltzmann_select(population, size: int, generation: int, initial_temp, target_temp, k):
+        temp = target_temp + (initial_temp - target_temp) * (math.e ** (-k * generation))
         total_fitness = 0
-
+        pseudo_fitness = []
+        probabilities = []
         for individual in population:
-            individual.fitness = math.e ** (individual.fitness / temp)
-            total_fitness += individual.fitness
+            fitness = math.e ** (individual.fitness / temp)
+            pseudo_fitness.append(fitness)
+            total_fitness += fitness
 
-        for individual in population:
-            individual.fitness = individual.fitness / total_fitness
+        for pseudo in pseudo_fitness:
+            probabilities.append(pseudo / total_fitness)
 
-        return Selector.roulette_select(population, size)
+        return Selector.cumulative_prob_select(population, probabilities, size)
 
     @staticmethod
     def truncate_select(population, size, k):

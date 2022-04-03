@@ -39,7 +39,7 @@ pip install -r dependencies.txt
 
 ## Archivos de configuración
 
-Un archivo en formato .json con los siguientes parametros:
+Un archivo en formato .json con los siguientes parametros (cabe destacar que todos cuentan con un valor default):
 
 - **selection**: Config. del metodo de selección
   - direct
@@ -60,6 +60,7 @@ Un archivo en formato .json con los siguientes parametros:
   - uniform
 - **p**: Probabilidad de mutar
 - **gen**: Cantidad minima de generaciones a iterar
+- **p_size**: Cantidad de individuos a considerar
 
 Ejemplos:
 

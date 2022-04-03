@@ -3,10 +3,10 @@ import random
 
 
 class Individual:
-    
+
     def __init__(self, size: int, mutation_probability: int, randomize=True):
         if randomize:
-            self.genome = np.random.choice([0,1], size=size, p=[0.9,0.1])
+            self.genome = np.random.choice([0, 1], size=size, p=[0.9, 0.1])
         else:
             self.genome = np.empty(size, int)
 
@@ -25,23 +25,16 @@ class Individual:
     def is_valid(self):
         return self.valid
 
-    def calculate_fitness(
-        self,
-        possible_elements,
-        max_elements: int,
-        max_weight: int,
-        absolute_max_weight: int,
-    ):
+    def calculate_fitness(self, possible_elements, max_elements: int,
+                          max_weight: int, absolute_max_weight: int):
         elements = 0
         self.weight = 0
         self.gains = 0
         for idx, n in enumerate(self.genome):
             if n == 1:
                 elements += 1
-
-            self.weight += n * possible_elements[idx]["weight"]
-            self.gains += n * possible_elements[idx]["gains"]
-        
+                self.weight += possible_elements[idx]["weight"]
+                self.gains += possible_elements[idx]["gains"]
 
         if elements > max_elements or self.weight > max_weight:
             self.fitness = absolute_max_weight - self.weight

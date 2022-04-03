@@ -1,9 +1,7 @@
-import numpy as np
-from plotter import plot
-from configurer import Configurer
-from selector import Selector
-from optimizer import Optimizer
 import sys
+from configurer import Configurer
+from optimizer import Optimizer
+from plotter import plot
 
 if len(sys.argv) == 1 or not str(sys.argv[1]).endswith(".json"):
     print("Please enter the configuration file (e.g. python3 main.py config.json)")
@@ -25,15 +23,8 @@ configuration = Configurer.configure(sys.argv[1], len(possible_elements))
 # print(max_elements, max_weight)
 # print("configuration: ", gen, p, o, a, cross, selection)
 
-optimizer = Optimizer(
-    possible_elements,
-    500,
-    max_elements,
-    max_weight,
-    configuration["gen"],
-    configuration["selector"],
-    configuration["crosser"],
-    configuration["p"],
-)
+optimizer = Optimizer(possible_elements, configuration["p_size"], max_elements, max_weight,
+                      configuration["gen"], configuration["selector"],
+                      configuration["crosser"], configuration["p"])
 optimizer.optimize()
-plot(optimizer.get_plot_array(), "Truncate - n = 65 - uniform")
+plot(optimizer.get_plot_array(), "Truncate - n = 65 - uniform") # TODO refactor esto

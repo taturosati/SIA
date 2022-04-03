@@ -1,5 +1,5 @@
 {
-  "selection": "boltzman",
+  "selection": "boltzmann",
   "t0": 10000,
   "tf": 8000,
   "k": 1,
