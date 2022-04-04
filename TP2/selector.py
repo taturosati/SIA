@@ -55,11 +55,9 @@ class Selector:
 
     @staticmethod
     def get_tournament_winner(population, u):
-        winners = [
-            Selector.get_winner(Selector.get_pair(population), u),
-            Selector.get_winner(Selector.get_pair(population), u),
-        ]
-        return Selector.get_winner(winners, u)
+        w1 = Selector.get_winner(Selector.get_pair(population), u)
+        w2 = Selector.get_winner(Selector.get_pair(population), u)
+        return Selector.get_winner([w1, w2], u)
 
     @staticmethod
     def get_pair(population):
@@ -67,10 +65,12 @@ class Selector:
 
     @staticmethod
     def get_winner(pair, u):
-        pair = sorted(pair, key=lambda x: x.fitness)
-        r = np.random.uniform()
-        return pair[1] if r < u else pair[0]
-
+        choose_best = np.random.uniform() < u
+        if pair[0].fitness > pair[1].fitness:
+            return pair[0] if choose_best else pair[1]
+        
+        return pair[1] if choose_best else pair[0]
+    
     # END TOURNAMENT SELECT
 
     @staticmethod

@@ -11,7 +11,7 @@ class Configurer:
             config = json.load(config_file)
 
             population_size = 500
-            if "p_size" in config and int(config["p_size"]) >= 500:
+            if "p_size" in config and int(config["p_size"]) >= 10:
                 population_size = int(config["p_size"])
             print("Population size:", population_size)
 
@@ -50,7 +50,7 @@ class Configurer:
                     selector = lambda population, size: Selector.tournament_select(population, size, u)
                 elif config["selection"] == "boltzmann":
                     print("boltzmann", end=" ")
-                    if ("k" in config and 0 < k <= 1 and "t0" in config
+                    if ("k" in config and "t0" in config
                             and 0 < t0 and "tf" in config and 0 < tf <= t0):
                         k = config["k"]
                         t0 = config["t0"]
