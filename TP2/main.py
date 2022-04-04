@@ -27,4 +27,4 @@ optimizer = Optimizer(possible_elements, configuration["p_size"], max_elements, 
                       configuration["gen"], configuration["selector"],
                       configuration["crosser"], configuration["p"])
 optimizer.optimize()
-plot(optimizer.get_plot_array(), "Truncate - n = 65 - uniform") # TODO refactor esto
+plot(optimizer.get_plot_array(), configuration["title"] + " - size = " + str(configuration["p_size"]) + " - p = " + str(configuration["p"]))

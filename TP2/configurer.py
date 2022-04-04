@@ -33,6 +33,7 @@ class Configurer:
             u = 0.6
             trunc = 10
             if "selection" in config:
+                title = config["selection"]
                 if config["selection"] == "direct":
                     print("direct")
                     pass
@@ -46,6 +47,8 @@ class Configurer:
                     print("tournament", end=" ")
                     if "u" in config and 0.5 <= config["u"] <= 1:
                         u = config["u"]
+                    
+                    title += " - u = " + str(u)
                     print("[ u =", u, "]")
                     selector = lambda population, size: Selector.tournament_select(population, size, u)
                 elif config["selection"] == "boltzmann":
@@ -55,6 +58,8 @@ class Configurer:
                         k = config["k"]
                         t0 = config["t0"]
                         tf = config["tf"]
+                    
+                    title += " - k = " + str(k) + " - t0 = " + str(t0) + " - tf = " + str(tf)
                     print("[ k =", k, "| t0 =", t0, "| tf =", tf, "]")
                     selector = lambda population, size: Selector.boltzmann_select(population, size, gen,
                                                                                   t0, tf, k)
@@ -62,6 +67,8 @@ class Configurer:
                     print("truncate", end=" ")
                     if "trunc" in config and 0 < trunc <= genome_size:
                         trunc = config["trunc"]
+                    
+                    title += " trunc = " + str(trunc)
                     print("[ truncate_k =", trunc, "]")
                     selector = lambda population, size: Selector.truncate_select(population, size, trunc)
                 else:
@@ -89,4 +96,4 @@ class Configurer:
                     raise "Invalid cross method"
 
         config_file.close()
-        return {"p_size": population_size, "gen": gen, "selector": selector, "crosser": crosser, "p": p}
+        return {"p_size": population_size, "gen": gen, "selector": selector, "crosser": crosser, "p": p, "title": title}
