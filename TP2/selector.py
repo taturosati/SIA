@@ -55,13 +55,10 @@ class Selector:
 
     @staticmethod
     def get_tournament_winner(population, u):
-        w1 = Selector.get_winner(Selector.get_pair(population), u)
-        w2 = Selector.get_winner(Selector.get_pair(population), u)
+        pairs = np.random.choice(population, size=4, replace=False)
+        w1 = Selector.get_winner(pairs[0:2], u)
+        w2 = Selector.get_winner(pairs[2:4], u)
         return Selector.get_winner([w1, w2], u)
-
-    @staticmethod
-    def get_pair(population):
-        return np.random.choice(population, 2, replace=True)
 
     @staticmethod
     def get_winner(pair, u):
