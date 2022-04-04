@@ -1,8 +1,6 @@
 {
-  "selection": "boltzmann",
-  "t0": 10000,
-  "tf": 8000,
-  "k": 1,
+  "selection": "tournament",
+  "u": 0.9,
   "cross": "uniform",
   "p": 0.001
 }

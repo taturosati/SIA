@@ -1,0 +1,6 @@
+{
+  "selection": "truncate",
+  "cross": "uniform",
+  "p": 0.001,
+  "trunc": 65
+}

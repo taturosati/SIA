@@ -1,0 +1,8 @@
+{
+  "selection": "boltzmann",
+  "t0": 10000,
+  "tf": 8000,
+  "k": 5,
+  "cross": "uniform",
+  "p": 0.001
+}
