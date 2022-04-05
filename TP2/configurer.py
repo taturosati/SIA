@@ -1,7 +1,7 @@
 import json
 
-from crosser import Crosser
-from selector import Selector
+from genetic_lib.crosser import Crosser
+from genetic_lib.selector import Selector
 
 
 class Configurer:

@@ -1,4 +1,4 @@
-from individual import Individual
+from .individual import Individual
 import numpy as np
 import random
 

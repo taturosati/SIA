@@ -1,6 +1,6 @@
 import sys
 from configurer import Configurer
-from optimizer import Optimizer
+from genetic_lib.optimizer import Optimizer
 from plotter import plot
 
 if len(sys.argv) == 1 or not str(sys.argv[1]).endswith(".json"):
