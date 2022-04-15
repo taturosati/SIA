@@ -16,7 +16,7 @@ class SimplePerceptron:
             i = i+1
             i_x = np.random.randint(1, p)
             h = self.calculate_h(in_set[i_x], w)
-            o = activation_func(h-self.umbral)
+            o = activation_func(h,self.umbral)
             for j in range(0, len(w)):  
                 delta_w[j] = n * (out_set[i_x] - o) * in_set[i_x][0] # aca no entiendo que x[i_x] tomar porque seria un array [-1, 1] ponele
                 w[j] = w[j] + delta_w[j]

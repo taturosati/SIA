@@ -4,8 +4,8 @@ import math
 
 class Activation:
     @staticmethod
-    def simple(h):
-        if h < 0: return -1
+    def simple(h, u):
+        if h-u < 0: return -1
         return 1
     
     @staticmethod
