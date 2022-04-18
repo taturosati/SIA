@@ -8,7 +8,7 @@ class SimplePerceptron:
     def solve(self, in_set, out_set, activation_func): #inset: x, out_set: y 
         p = len(in_set)
         i = 0
-        n = 2 # cantidad de neuronas conectadas: seria n1 && n2 ? 
+        n = 0.1 #tasa de aprendizaje
         w = [0,0] ##np.zeros(n) usa float64 y se rompe todo. ## el umbral se lo paso al pereceptron 
         delta_w = w
         min_error = p*2
