@@ -3,3 +3,4 @@
 __pycache__
 config.json
 solution.txt
+.DS_STORE

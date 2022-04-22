@@ -1,6 +1,8 @@
 import numpy as np
 import math
 
+from plotter import plot
+
 
 class SimplePerceptron:
     def __init__(self, limit, error) -> None:
@@ -11,17 +13,18 @@ class SimplePerceptron:
         p = len(training_set)
         iteration = 0
         eta = 0.1  # tasa de aprendizaje
-        w = np.array([-1.0, 0.0, 0.0]) # threshold weight is fixed at -1, initialize others at 0
+        w = np.zeros(len(training_set[0]))
         self.error = 1
         min_error = p * 2
         w_min = np.zeros(len(training_set[0]))
+        weights = []
         while self.error > 0 and iteration < self.limit:
             iteration += 1
             i_x = np.random.randint(0, p)
             excitement = np.dot(training_set[i_x], w)
 
             activation = SimplePerceptron.sign(excitement) # maybe activation_func(excitement)
-            for i in range(1, len(w)): # start iterating from 1 because first weight is threshold
+            for i in range(0, len(w)):
                 delta_w = eta * (correct_output[i_x] - activation) * training_set[i_x][i]
                 w[i] += delta_w
 
@@ -29,6 +32,10 @@ class SimplePerceptron:
             if self.error < min_error:
                 min_error = self.error
                 w_min = w
+
+            weights.append(np.copy(w))
+        
+        plot(training_set, correct_output, weights, "Simple Perceptron")
 
         print("Iteration " + str(iteration))
         if iteration == self.limit:
