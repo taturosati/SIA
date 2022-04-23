@@ -1,6 +1,6 @@
 import math
 import numpy as np
-from scipy import optimize
+from qiskit import algorithms
 
 class Solver:
     def __init__(self, inset, correct_output):
@@ -11,37 +11,41 @@ class Solver:
         self.w0 = np.array([0, 0])
         self.w_as_array = np.zeros(11, float)
 
-    def g_func(self, num):
+    @staticmethod
+    def g_func(num):
         return math.exp(num)/(1 + math.exp(num))
 
-    def f_func(self, W, w, w0, phi):
-        sum = 0
-        for j in range (1,2):
+    @staticmethod
+    def f_func(W, w, w0, phi):
+        tot = 0
+        for j in range(1,3):
             aux = 0
-            for k in range (0,2):
-                aux += w[j][k] * phi[k]
-            sum += W[j] * self.g_func(aux - w0[j - 1])
-        return self.g_func(sum - W[0])
+            for k in range(0,3):
+                aux += w[j-1][k] * phi[k]
+            
+            tot += W[j] * Solver.g_func(aux - w0[j - 1])
+        return Solver.g_func(tot - W[0])
 
     def error(self, W, w, w0):
-        sum = 0
-        for i in range(0,2):
-            sum += (self.correct_output[i] - self.f_func(W, w, w0, self.inset[i])) ** 2
-        return sum
-    
-    @staticmethod
-    def obj_f(arr, *args):
-        W = [arr[i] for i in range(0,2)]
+        tot = 0
+        for i in range(0,3):
+            tot += (self.correct_output[i] - Solver.f_func(W, w, w0, self.inset[i])) ** 2
+        
+        return tot
+        
+    def obj_f(self, arr):
+        W = [arr[i] for i in range(0,3)]
         w = [[], []]
-        w[0] = [arr[i] for i in range(3,5)]
-        w[1] = [arr[i] for i in range(6,8)]
-        w0 = [arr[i] for i in range(9,10)]
-        return Solver.error(args[0],W, w, w0)
+        w[0] = [arr[i] for i in range(3,6)]
+        w[1] = [arr[i] for i in range(6,9)]
+        w0 = [arr[i] for i in range(9,11)]
+        return self.error(W, w, w0)
+
+    def adam_minimizer(self):
+        return algorithms.optimizers.ADAM().optimize(11, self.obj_f, initial_point=self.w_as_array)
 
     def gradient_minimizer(self):
-        optimize.minimize(self.error())
+        return algorithms.optimizers.GradientDescent().optimize(11, self.obj_f, initial_point=self.w_as_array)
     
     def conjugate_gradient_minimizer(self):
-        # return optimize.fmin_cg(self.obj_f, self.w_as_array, params)  
-        return optimize.minimize(self.obj_f, self.w_as_array, (self), method='CG')
-        
+        return algorithms.optimizers.CG().optimize(11, self.obj_f, initial_point=self.w_as_array)
