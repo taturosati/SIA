@@ -9,8 +9,7 @@ class Solver:
         self.W = np.array([0, 0, 0])
         self.w = np.array([[0, 0, 0], [0, 0, 0]])
         self.w0 = np.array([0, 0])
-        # self.w_as_array = np.zeros(11, float)
-        self.w_as_array = np.array([0.5,0.5,0.5,0.5,0.5,0.5,0.5,0.5,0.5,0.5,0.5])
+        self.w_as_array = np.zeros(11, float)
 
     def g_func(self, num):
         return math.exp(num)/(1 + math.exp(num))
@@ -40,10 +39,9 @@ class Solver:
         return Solver.error(args[0],W, w, w0)
 
     def gradient_minimizer(self):
-
         optimize.minimize(self.error())
     
     def conjugate_gradient_minimizer(self):
-        # return optimize.fmin_cg(self.obj_f, self.w_as_array, params)
+        # return optimize.fmin_cg(self.obj_f, self.w_as_array, params)  
         return optimize.minimize(self.obj_f, self.w_as_array, (self), method='CG')
         

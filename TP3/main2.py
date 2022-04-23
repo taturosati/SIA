@@ -1,6 +1,6 @@
 import numpy as np
 from simple_perceptron import SimplePerceptron
-from activation import Activation
+from utils import Utils, solve_type_step, solve_type_lineal, solve_type_not_lineal
 
 training_set = []
 with open("./training_set.txt", "r") as training_file:
@@ -15,4 +15,10 @@ with open("./correct_output.txt", "r") as correct_file:
         correct_set.append(float(line))
     correct_file.close()
 
-SimplePerceptron(10000).solve(training_set, correct_set, Activation.lineal)
+min_out = min(correct_set)
+max_out = max(correct_set)
+
+correct_set = np.array(correct_set)
+correct_set = 2 * (correct_set - min_out) / (max_out - min_out) - 1
+
+SimplePerceptron(10000).solve(training_set, correct_set, solve_type_not_lineal)
