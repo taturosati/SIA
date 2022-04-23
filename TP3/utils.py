@@ -50,9 +50,12 @@ class Utils:
         return math.tanh(h * 0.5)
 
     @staticmethod
-    def g_prima(h):
+    def g_prime(h):
         return 0.5 *(1 - math.tanh(0.5 * h)**2)
 
-solve_type_step = {"error": Utils.calculate_step_error, "activation": Utils.activation_simple, "mult": 1}
-solve_type_lineal = {"error": Utils.calculate_lineal_error, "activation": Utils.activation_lineal, "mult": 1}
-solve_type_not_lineal = {"error": Utils.calculate_not_lineal_error, "activation": Utils.activation_not_lineal, "mult": Utils.g_prima}
+
+ret_one = lambda _: 1
+
+solve_type_step = {"error": Utils.calculate_step_error, "activation": Utils.activation_simple, "mult": ret_one}
+solve_type_lineal = {"error": Utils.calculate_lineal_error, "activation": Utils.activation_lineal, "mult": ret_one}
+solve_type_not_lineal = {"error": Utils.calculate_not_lineal_error, "activation": Utils.activation_not_lineal, "mult": Utils.g_prime}

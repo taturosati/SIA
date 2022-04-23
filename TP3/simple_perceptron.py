@@ -2,7 +2,6 @@ import numpy as np
 import math
 from plotter import plot
 
-
 class SimplePerceptron:
     def __init__(self, limit):
         self.limit = limit
@@ -25,23 +24,22 @@ class SimplePerceptron:
             activation = solve_type["activation"](excitement)
 
             for i in range(0, len(w)):
-                delta_w = eta * (correct_output[i_x] - activation) * training_set[i_x][i] * (solve_type["mult"](excitement) if solve_type["mult"] != 1 else 1)
+                delta_w = eta * (correct_output[i_x] - activation) * training_set[i_x][i] * solve_type["mult"](excitement)
                 w[i] += delta_w
 
-            error =solve_type["error"](training_set, correct_output, w, p)
-            print(error)
+            error = solve_type["error"](training_set, correct_output, w, p)
             if error < min_error:
                 min_error = error
                 w_min = w
 
             weights.append(np.copy(w))
-            # print(w)
         
-        plot(training_set, correct_output, weights, "Simple Perceptron")
+        #plot(training_set, correct_output, weights, "Simple Perceptron")
 
         print("Iteration " + str(iteration))
         if iteration == self.limit:
             w = w_min
+
         print(error)
         print(w)
         return w
