@@ -15,22 +15,26 @@ def print_result(result, time):
     print("- w:", w)
     print("- w0:", w0)
     print("- Error:", result[1])
+    print()
 
 
 inset = [[4.4793, -4.0765, -4.0765], [-4.1793, -4.9218, 1.7664], [-3.9429, -0.7689, 4.883]]
 correct_output = [0,1,1]
 
 print("Gradient Descent: ")
+print("-----------------")
 start_time = time.time()
 result = Solver(inset, correct_output).gradient_minimizer()
 print_result(result, time.time() - start_time)
 
 print("Conjugate Gradient: ")
+print("-------------------")
 start_time = time.time()
 result = Solver(inset, correct_output).conjugate_gradient_minimizer()
 print_result(result, time.time() - start_time)
 
 print("ADAM:")
+print("-----")
 start_time = time.time()
 result = Solver(inset, correct_output).adam_minimizer()
 print_result(result, time.time() - start_time)
