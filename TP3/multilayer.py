@@ -30,7 +30,7 @@ class Multilayer:
             error = self.calculate_error(training_set, correct_outputs)
             errors.append(error)
             # print(error)
-        return self.layers[-1].get_output(), errors
+        return errors
 
     def predict(self, input):
         self.layers[0].calculate_v(input)
