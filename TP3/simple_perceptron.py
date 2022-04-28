@@ -9,14 +9,14 @@ class SimplePerceptron:
         p = len(training_set)
         errors= []
         iteration = 0
-        eta = 0.4  # tasa de aprendizaje
+        eta = 0.01  # tasa de aprendizaje
         w = np.zeros(len(training_set[0]))
         error = 1
         min_error = p * 2
         w_min = np.zeros(len(training_set[0]))
         weights = []
 
-        while error > 0 and iteration < self.limit:
+        while error > 0.001 and iteration < self.limit:
             iteration += 1
             i_x = np.random.randint(0, p)
 
@@ -25,7 +25,7 @@ class SimplePerceptron:
 
             for i in range(0, len(w)):
                 delta_w = eta * (correct_output[i_x] - activation) * training_set[i_x][i] * solve_type["mult"](excitement)
-                w[i] += delta_w
+                w[i] += delta_w 
 
             error = solve_type["error"](training_set, correct_output, w, p)
             errors.append(error)

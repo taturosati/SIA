@@ -3,7 +3,7 @@ import numpy as np
 
 class Utils:
 
-    b = 0.005
+    b = 0.1
 
     @staticmethod
     def escalate(arr):
