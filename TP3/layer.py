@@ -24,6 +24,7 @@ class Layer:
         for perceptron in self.perceptrons:
             perceptron.calculate_activation(previous_layer)
     
+
     def calculate_last_deltas(self, correct_outputs):
         for i in range(0, len(self.perceptrons)):
             self.perceptrons[i].calculate_last_delta(correct_outputs[i])
@@ -47,9 +48,7 @@ class Layer:
         tot = 0
         for i in range(len(correct_output)):
             tot += (correct_output[i] - self.perceptrons[i].get_activation()) ** 2
-        
         return tot
-
     # def learn(self, training_set):
     #     for p in self.perceptrons:
     #         p.learn()

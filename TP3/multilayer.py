@@ -16,6 +16,7 @@ class Multilayer:
         while error > error_bound:
             u = np.random.randint(0, len(training_set))
             current_pattern = training_set[u]
+            # print(u)
             
             self.layers[0].calculate_v(current_pattern)
             for i in range(1, len(self.layer_sizes)):
@@ -25,10 +26,21 @@ class Multilayer:
             for i in range(len(self.layer_sizes) - 1, 0, -1):
                 self.layers[i - 1].calculate_delta(self.layers[i].get_weighted_deltas())
             
+            
             error = self.calculate_error(training_set, correct_outputs)
             errors.append(error)
-            print(error)
-        return errors
+            # print(error)
+        return self.layers[-1].get_output(), errors
+
+    def predict(self, input):
+        self.layers[0].calculate_v(input)
+        for i in range(1, len(self.layer_sizes)):
+            self.layers[i].calculate_v(self.layers[i - 1].get_output())
+        return self.layers[-1].get_output()
+        
+        # self.layers[-1].calculate_last_deltas(correct_outputs[u])
+        # for i in range(len(self.layer_sizes) - 1, 0, -1):
+        #     self.layers[i - 1].calculate_delta(self.layers[i].get_weighted_deltas())
 
     
     def calculate_error(self, training_set, correct_outputs):
