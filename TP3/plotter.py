@@ -31,3 +31,17 @@ def plot(inputs, outputs, weights, title: str):
     anim = animation.FuncAnimation(fig, animate, interval=100, frames=len(weights))
     # anim.save(title + str(np.random.uniform()) + ".gif")
     plt.show()
+
+def plot_error(errors):
+    x = np.array(range(len(errors)))
+
+    fig, ax = plt.subplots(figsize=(5, 3), layout="constrained")
+
+    ax.set_xlabel("Iteración")
+    ax.set_ylabel("Error")
+    ax.locator_params("y")
+    ax.locator_params("x")
+    ax.plot(x, errors, label="Error", color="b")
+    ax.set_title("Error por iteración")
+    ax.legend()
+    plt.show()

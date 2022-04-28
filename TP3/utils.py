@@ -3,6 +3,28 @@ import numpy as np
 
 class Utils:
 
+    b = 0.005
+
+    @staticmethod
+    def escalate(arr):
+        min_out = min(arr)
+        max_out = max(arr)
+
+        arr = np.array(arr)
+        arr = 2 * (arr - min_out) / (max_out - min_out) - 1
+        return arr
+    
+    @staticmethod
+    def multiple_escalate(arr):
+        for i in range(len(arr)):
+            min_out = min(arr[i])
+            max_out = max(arr[i])
+
+            arr[i] = np.array(arr[i])
+            arr[i] = 2 * (arr[i] - min_out) / (max_out - min_out) - 1
+        return arr
+
+
     @staticmethod
     def activation_simple(h): # math.isclose(h, 0, rel_tol=1e-5) 
         return 1 if h >= 0 else -1
@@ -13,7 +35,7 @@ class Utils:
 
     @staticmethod
     def activation_not_lineal(h):
-        return math.tanh(0.5 * h)
+        return math.tanh(Utils.b * h)
 
     # x -> conjunto de entrenamiento
     # y -> salida deseada
@@ -40,18 +62,14 @@ class Utils:
             aux = np.dot(w, x[u])
             error += ((y[u]) - Utils.g(aux)) ** 2
         return 0.5 * error
-    
-    # @staticmethod
-    # def escalate(y):
-    #     return 2*(y - min(y))/(max(y)-min(y)) - 1
 
     @staticmethod
     def g(h):
-        return math.tanh(h * 0.5)
+        return math.tanh(Utils.b * h)
 
     @staticmethod
     def g_prime(h):
-        return 0.5 *(1 - math.tanh(0.5 * h)**2)
+        return 0.5 *(1 - math.tanh(Utils.b * h)**2)
 
 
 ret_one = lambda _: 1

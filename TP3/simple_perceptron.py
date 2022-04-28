@@ -1,5 +1,4 @@
 import numpy as np
-import math
 from plotter import plot
 
 class SimplePerceptron:
@@ -8,8 +7,9 @@ class SimplePerceptron:
 
     def solve(self, training_set, correct_output, solve_type: dict):  # training_set: x, correct_output: y
         p = len(training_set)
+        errors= []
         iteration = 0
-        eta = 0.5  # tasa de aprendizaje
+        eta = 0.4  # tasa de aprendizaje
         w = np.zeros(len(training_set[0]))
         error = 1
         min_error = p * 2
@@ -28,6 +28,7 @@ class SimplePerceptron:
                 w[i] += delta_w
 
             error = solve_type["error"](training_set, correct_output, w, p)
+            errors.append(error)
             if error < min_error:
                 min_error = error
                 w_min = w
@@ -40,6 +41,6 @@ class SimplePerceptron:
         if iteration == self.limit:
             w = w_min
 
-        print(error)
-        print(w)
-        return w
+        print("Final error:",error)
+        print("W:", w)
+        return [w,errors]
