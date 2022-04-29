@@ -6,6 +6,18 @@ class Utils:
     b = 0.1
 
     @staticmethod
+    def shuffle_two_arrays(first, second):
+        a = np.array(first)
+        b = np.array(second)
+
+        indices = np.arange(a.shape[0])
+        np.random.shuffle(indices)
+
+        first = a[indices]
+        second = b[indices]
+        return first, second
+
+    @staticmethod
     def escalate(arr):
         min_out = min(arr)
         max_out = max(arr)

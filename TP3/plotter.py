@@ -45,3 +45,17 @@ def plot_error(errors):
     ax.set_title("Error por iteración")
     ax.legend()
     plt.show()
+
+def plot_metric(met, epoch):
+    x = np.array(range(epoch))
+
+    fig, ax = plt.subplots(figsize=(5, 3), layout="constrained")
+
+    ax.set_xlabel("Epocas")
+    ax.set_ylabel("Metrica")
+    ax.locator_params("y")
+    ax.locator_params("x")
+    ax.plot(x, met, label="Metrica", color="b")
+    ax.set_title("Metrica por Epoca")
+    ax.legend()
+    plt.show()
