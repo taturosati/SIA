@@ -13,7 +13,9 @@ class SimplePerceptron:
 
     def solve(self, training_set, test_set, solve_type: dict):  # training_set: x, correct_output: y
 
-        p = len(training_set)
+        print("p viejo:",len(training_set))
+        print("p nuevo:",len(training_set["in"]))
+        p = len(training_set["in"])
         errors= []
         iteration = 0
         eta = 0.1  # tasa de aprendizaje
@@ -65,10 +67,10 @@ class SimplePerceptron:
         
         #plot(training_set, correct_output, weights, "Simple Perceptron")
 
-        print("Iteration " + str(iteration))
+        # print("Iteration " + str(iteration))
         if iteration == self.limit:
             self.w = w_min
 
-        print("Final error:",error)
-        print("W:", self.w)
+        # print("Final error:",error)
+        # print("W:", self.w)
         return self.w, errors, met

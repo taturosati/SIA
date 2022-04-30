@@ -35,7 +35,7 @@ in_set, out_set = Utils.shuffle_two_arrays(in_set, out_set)
 
 # [w, errors] = SimplePerceptron(8000).solve(training_set, test_set, solve_type_not_lineal)
 
-k = 50
+k = 10
 in_parts = np.array_split(in_set, k)
 out_parts = np.array_split(out_set, k)
 
