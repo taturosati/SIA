@@ -8,7 +8,7 @@ and_out_set = [-1, -1, -1, 1]
 
 
 print("AND")
-[r,e] = SimplePerceptron(1000).solve(and_in_set, and_out_set, solve_type_step)
+[r,e] = SimplePerceptron(1000).solve({"in": and_in_set, "out": and_out_set}, {"in": [], "out": []}, solve_type_step)
 plot_error(e)
 
 or_in_set = [[-1, -1, 1], [-1, 1, -1], [-1, -1, -1], [-1, 1, 1]]

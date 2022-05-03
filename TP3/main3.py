@@ -71,12 +71,15 @@ else:
         errors = multilayer.solve(in_set, out_set, 0.01) 
         plot_error(errors)
 
+        print(in_set)
+
         # agregamos ruido a los datos
         for i, picture in enumerate(in_set):
             for j in range(len(picture)):
                 rnd = np.random.uniform()
                 if rnd < 0.02:
                     picture[j] = 1 - picture[j]
+        print(in_set)
 
         pe = 0
         nope = 0

@@ -3,7 +3,7 @@ import numpy as np
 
 class Utils:
 
-    b = 0.1
+    b = 0.6
 
     @staticmethod
     def shuffle_two_arrays(first, second):
