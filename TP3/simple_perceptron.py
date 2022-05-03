@@ -19,6 +19,7 @@ class SimplePerceptron:
         eta = 0.1  # tasa de aprendizaje
         self.w = np.zeros(len(training_set["in"][0]))
         error = 1
+        last_error = error
         min_error = p * 2
         w_min = np.zeros(len(training_set["in"][0]))
         weights = []
@@ -44,19 +45,17 @@ class SimplePerceptron:
                 if error < min_error:
                     min_error = error
                     w_min = self.w
+                if abs(last_error - error) < 10**(-9):
+                    if len(test_set["in"]) > 0:
+                        met.append(self.calculate_metric(test_set["in"], test_set["out"], solve_type))
+                        print(min(errors))
+                    return self.w, errors, met
+                last_error = error
 
             weights.append(np.copy(self.w))
 
             if len(test_set["in"]) > 0:
-                pe = 0
-                nope = 0
-                for i in range(len(test_set["out"])):
-                    res = self.predict(test_set["in"][i], solve_type)
-                    if (abs(test_set["out"][i] - res) < 0.01):
-                        pe += 1
-                    else:
-                        nope += 1
-                met.append(pe / (pe + nope))
+                met.append(self.calculate_metric(test_set["in"], test_set["out"], solve_type))
         
         # plot_metric(met, int(iteration/len(training_set["in"])))
 
@@ -71,3 +70,14 @@ class SimplePerceptron:
         # print("W:", self.w)
         print(min(errors))
         return self.w, errors, met
+
+    def calculate_metric(self, test_in, test_out, solve_type):
+        pe = 0
+        nope = 0
+        for i in range(len(test_out)):
+            res = self.predict(test_in[i], solve_type)
+            if (abs(test_out[i] - res) < 0.01):
+                pe += 1
+            else:
+                nope += 1
+        return pe / (pe + nope)

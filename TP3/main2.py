@@ -38,8 +38,8 @@ for i in range(k):
 
     training_set = {"in": training_set_in, "out": training_set_out}
     test_set = {"in": in_parts[i], "out": out_parts[i]}
-
-    w, errors, metrics = SimplePerceptron(1000).solve(training_set, test_set, solve_type_not_lineal)
+    print("[ k =", i, "]:", end=" ")
+    w, errors, metrics = SimplePerceptron(10000).solve(training_set, test_set, solve_type_not_lineal)
 
     if max(metrics) > max(best_metric):
         best_w = w
