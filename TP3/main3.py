@@ -61,6 +61,21 @@ else:
     else:
         # EJERCICIO 3: NUMERO
         # el training set es el mismo
+        
+        ## PRINTS INTERFERENCE NUMBER ##
+        # for i, picture in enumerate(in_set):
+        #     picture = picture[1:]
+        #     for j in range(len(picture)):
+        #         rnd = np.random.uniform()
+        #         if rnd < 0.02:
+        #             picture[j] = 1 - picture[j]
+        #         if j % 5 == 0:
+        #             print()
+        #         else:
+        #             print(picture[j], end=" ")
+        #     print()
+
+
         out_set = []
         for num in range(10):
             expected_output = [0] * 10
@@ -79,7 +94,10 @@ else:
                 rnd = np.random.uniform()
                 if rnd < 0.02:
                     picture[j] = 1 - picture[j]
-        print(in_set)
+                print[j]
+            print()
+        # print(in_set)
+
 
         pe = 0
         nope = 0

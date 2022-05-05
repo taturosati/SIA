@@ -1,7 +1,7 @@
 import numpy as np
 from plotter import plot_metric
 from plotter import plot
-from utils import Utils
+from utils import Utils, solve_type_lineal
 
 class SimplePerceptron:
     def __init__(self, limit):
@@ -17,6 +17,7 @@ class SimplePerceptron:
         errors = []
         iteration = 0
         eta = 0.1  # tasa de aprendizaje
+        converge_limit = 10**(-8)
         self.w = np.zeros(len(training_set["in"][0]))
         error = 1
         last_error = error
@@ -41,11 +42,13 @@ class SimplePerceptron:
                     self.w[i] += delta_w 
 
                 error = solve_type["error"](training_set["in"], training_set["out"], self.w, p)
+                if(solve_type == solve_type_lineal):
+                    error = 2*(error/p)
                 errors.append(error)
                 if error < min_error:
                     min_error = error
                     w_min = self.w
-                if abs(last_error - error) < 10**(-9):
+                if abs(last_error - error) < converge_limit:
                     if len(test_set["in"]) > 0:
                         met.append(self.calculate_metric(test_set["in"], test_set["out"], solve_type))
                         print(min(errors))

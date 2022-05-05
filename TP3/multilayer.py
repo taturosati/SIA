@@ -28,7 +28,7 @@ class Multilayer:
             
             
             error = self.calculate_error(training_set, correct_outputs)
-            print(error)
+            # print(error)
             errors.append(error)
             # print(error)
         return errors
