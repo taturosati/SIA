@@ -3,7 +3,7 @@ from multilayer import Multilayer
 from plotter import plot_error, plot_metric
 import numpy as np
 
-ej = 3
+ej = 2
 
 if ej == 1:
     or_in_set = [[-1, -1, 1], [-1, 1, -1], [-1, -1, -1], [-1, 1, 1]]
@@ -23,57 +23,57 @@ else:
                     num_array +=  [int(n) for n in line.split()]
                 in_set.append(num_array)
             training_file.close()
+
     if ej == 2:
         # EJERCICIO 2: PAR O IMPAR
 
-        out_set = [[1],[-1]] * 5
+        out_set = [[1], [-1]] * 5
 
         in_set, out_set = Utils.shuffle_two_arrays(in_set, out_set)
 
-        training_set = {"in": in_set[:8], "out": out_set[:8]}
-        test_set = {"in": in_set[8:], "out": out_set[8:]}
+        k = 10
+        in_parts = np.array_split(in_set, k)
+        out_parts = np.array_split(out_set, k)
 
-
-        multi =  Multilayer([5,1], 35, 0.5)
-        n = 0
         met = []
-        while n < 10:
-            multi.solve(training_set["in"], training_set["out"], 0.001)
-            # errors = multi.solve(test_set["in"], test_set["out"], 0.001)
+        best_metric = [0]
 
-            pe = 0
-            nope = 0
+        for i in range(k):
+            training_set_in = []
+            training_set_out = []
+            for idx, part in enumerate(in_parts):
+                if idx != i:
+                    training_set_in += list(part)
+                    training_set_out += list(out_parts[idx])
+            
+            training_set = {"in": training_set_in, "out": training_set_out}
+            test_set = {"in": in_parts[i], "out": out_parts[i]}
+            print("[ k =", i, "]:", end=" ")
+            errors, metrics = Multilayer([10, 1], 35, 0.01).solve(training_set, test_set, 0.01)
 
-            for i in range(len(test_set["out"])):
-                res = multi.predict(test_set["in"][i])
-                if (test_set["out"][i] >= 0 and res[0] >= 0) or (test_set["out"][i] < 0 and res[0] < 0):
-                    pe+=1
-                    print("pega")
-                else:
-                    print("no pega")
-                    nope+=1
-            n+=1
-            met.append(pe/(pe+nope))
+            if max(metrics) > max(best_metric):
+                print("METRICA:", max(metrics))
+                best_metric = metrics
 
-        # plot_error(errors)
-        plot_metric(met, 10)
+            plot_error(errors)
+        plot_metric(met, k)
 
     else:
         # EJERCICIO 3: NUMERO
         # el training set es el mismo
         
         ## PRINTS INTERFERENCE NUMBER ##
-        # for i, picture in enumerate(in_set):
-        #     picture = picture[1:]
-        #     for j in range(len(picture)):
-        #         rnd = np.random.uniform()
-        #         if rnd < 0.02:
-        #             picture[j] = 1 - picture[j]
-        #         if j % 5 == 0:
-        #             print()
-        #         else:
-        #             print(picture[j], end=" ")
-        #     print()
+        for i, picture in enumerate(in_set):
+            picture = picture[1:]
+            for j in range(len(picture)):
+                rnd = np.random.uniform()
+                if rnd < 0.02:
+                    picture[j] = 1 - picture[j]
+                if j % 5 == 0:
+                    print()
+                else:
+                    print(picture[j], end=" ")
+            print()
 
 
         out_set = []
@@ -102,8 +102,7 @@ else:
         pe = 0
         nope = 0
         for i, in_ix in enumerate(in_set):
-            res = multilayer.predict(in_ix)
-            
+            res = multilayer.predict(in_ix)            
             
             if (sum([abs(n) for n in np.subtract(out_set[i], np.array(res))]) <= 0.01):
                 pe+=1

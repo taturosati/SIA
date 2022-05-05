@@ -8,7 +8,7 @@ class Perceptron:
         if is_first_layer:
             self.w = np.ones(shape=(amount_of_inputs, 1))
         else:
-            self.w = np.random.uniform(low=0, high=0.3, size=(amount_of_inputs))
+            self.w = np.random.uniform(low=-0.5, high=0.5, size=(amount_of_inputs))
     
         self.eta = eta
         self.inputs = np.empty(amount_of_inputs)

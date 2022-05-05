@@ -16,7 +16,7 @@ class SimplePerceptron:
         p = len(training_set["in"])
         errors = []
         iteration = 0
-        eta = 0.1  # tasa de aprendizaje
+        eta = 0.001  # tasa de aprendizaje
         converge_limit = 10**(-8)
         self.w = np.zeros(len(training_set["in"][0]))
         error = 1
@@ -42,7 +42,7 @@ class SimplePerceptron:
                     self.w[i] += delta_w 
 
                 error = solve_type["error"](training_set["in"], training_set["out"], self.w, p)
-                if(solve_type == solve_type_lineal):
+                if solve_type == solve_type_lineal:
                     error = 2*(error/p)
                 errors.append(error)
                 if error < min_error:

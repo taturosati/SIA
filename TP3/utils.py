@@ -3,7 +3,7 @@ import numpy as np
 
 class Utils:
 
-    b = 0.6
+    b = 0.15
 
     @staticmethod
     def shuffle_two_arrays(first, second):
@@ -78,10 +78,12 @@ class Utils:
     @staticmethod
     def g(h):
         return math.tanh(Utils.b * h)
+        # return (1 / (1+math.exp(-2*Utils.b*h)))
 
     @staticmethod
     def g_prime(h):
         return 0.5 *(1 - math.tanh(Utils.b * h)**2)
+        # return 2*Utils.b*Utils.g(h)*(1-Utils.g(h))
 
 
 ret_one = lambda _: 1
