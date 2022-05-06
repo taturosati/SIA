@@ -3,7 +3,20 @@ from multilayer import Multilayer
 from plotter import plot_error, plot_metric
 import numpy as np
 
-ej = 2
+def check_prediction(multilayer, in_set, out_set):
+    pe = 0
+    nope = 0
+    for i, in_ix in enumerate(in_set):
+        res = multilayer.predict(in_ix)
+        for n in np.subtract(out_set[i], np.array(res)):
+            if abs(n) > 0.2:
+                print("no pega")
+                nope+=1
+                break
+        print("pega")
+        pe+=1
+
+ej = 3
 
 if ej == 1:
     or_in_set = [[-1, -1, 1], [-1, 1, -1], [-1, -1, -1], [-1, 1, 1]]
@@ -62,31 +75,37 @@ else:
         # EJERCICIO 3: NUMERO
         # el training set es el mismo
         
-        ## PRINTS INTERFERENCE NUMBER ##
-        for i, picture in enumerate(in_set):
-            picture = picture[1:]
-            for j in range(len(picture)):
-                rnd = np.random.uniform()
-                if rnd < 0.02:
-                    picture[j] = 1 - picture[j]
-                if j % 5 == 0:
-                    print()
-                else:
-                    print(picture[j], end=" ")
-            print()
+        # ## PRINTS INTERFERENCE NUMBER ##
+        # for i, picture in enumerate(in_set):
+        #     picture = picture[1:]
+        #     for j in range(len(picture)):
+        #         rnd = np.random.uniform()
+        #         if rnd < 0.02:
+        #             picture[j] = 1 - picture[j]
+        #         if j % 5 == 0:
+        #             print()
+        #         else:
+        #             print(picture[j], end=" ")
+        #     print()
 
 
         out_set = []
+        # Fills out_set
         for num in range(10):
             expected_output = [0] * 10
             expected_output[num] = 1
             out_set.append(expected_output)
+        
         # 5, 11, 10 anduvo bastante bien
-        multilayer = Multilayer([5,11,10], 35, 0.1)
-        errors = multilayer.solve(in_set, out_set, 0.01) 
+        # 9, 10 funciona muy bien tambien
+        multilayer = Multilayer([5, 11, 10], 35, 0.1)
+        training_set = {"in": in_set, "out": out_set}
+        test_set = {"in": [], "out": []}
+        errors, metrics = multilayer.solve(training_set, test_set, 0.01) 
         plot_error(errors)
 
-        print(in_set)
+        print("Antes de agregar ruido")
+        check_prediction(multilayer, in_set, out_set)
 
         # agregamos ruido a los datos
         for i, picture in enumerate(in_set):
@@ -94,22 +113,10 @@ else:
                 rnd = np.random.uniform()
                 if rnd < 0.02:
                     picture[j] = 1 - picture[j]
-                print[j]
-            print()
-        # print(in_set)
 
+        print("Despues de agregar ruido")
+        check_prediction(multilayer, in_set, out_set)
 
-        pe = 0
-        nope = 0
-        for i, in_ix in enumerate(in_set):
-            res = multilayer.predict(in_ix)            
-            
-            if (sum([abs(n) for n in np.subtract(out_set[i], np.array(res))]) <= 0.01):
-                pe+=1
-                print("pega")
-            else:
-                print("no pega")
-                nope+=1
 
         
     

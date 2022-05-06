@@ -35,8 +35,8 @@ class Multilayer:
                 error = self.calculate_error(training_set["in"], training_set["out"])
                 print(error)
                 errors.append(error)
-
-            metrics.append(self.calculate_metric(test_set["in"], test_set["out"]))
+            if len(test_set["in"])>0:
+                metrics.append(self.calculate_metric(test_set["in"], test_set["out"]))
         return errors, metrics
 
     def predict(self, input):
