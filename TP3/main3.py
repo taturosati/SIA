@@ -16,14 +16,16 @@ def check_prediction(multilayer, in_set, out_set):
         print("pega")
         pe+=1
 
-ej = 3
+ej = 1
 
 if ej == 1:
     or_in_set = [[-1, -1, 1], [-1, 1, -1], [-1, -1, -1], [-1, 1, 1]]
     or_out_set = [[1], [1], [-1], [-1]]
+    training_set = {"in": or_in_set, "out":or_out_set}
+    test_set = {"in": [], "out":[]}
     print("XOR")
 
-    errors = Multilayer([2, 1], 2, 0.5).solve(or_in_set, or_out_set, 0.001)
+    errors, metrics = Multilayer([2, 1], 2, 0.5).solve(training_set, test_set, 0.001)
     plot_error(errors)
 else:
     in_set = []
