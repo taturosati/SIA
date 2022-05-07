@@ -17,113 +17,110 @@ def check_prediction(multilayer, in_set, out_set):
         print("pega")
         pe+=1
 
-ej = 1
-if len(sys.argv) > 1:
-    ej = int(sys.argv[1])
+def third_excercise(params: dict):
 
+    if params["item"] == "a":
+        or_in_set = [[-1, -1, 1], [-1, 1, -1], [-1, -1, -1], [-1, 1, 1]]
+        or_out_set = [[1], [1], [-1], [-1]]
+        training_set = {"in": or_in_set, "out":or_out_set}
+        test_set = {"in": [], "out":[]}
+        print("Solving for XOR")
 
-if ej == 1:
-    or_in_set = [[-1, -1, 1], [-1, 1, -1], [-1, -1, -1], [-1, 1, 1]]
-    or_out_set = [[1], [1], [-1], [-1]]
-    training_set = {"in": or_in_set, "out":or_out_set}
-    test_set = {"in": [], "out":[]}
-    print("Solving for XOR")
-
-    errors, metrics = Multilayer([2, 1], 2, 0.5).solve(training_set, test_set, 0.001)
-    plot_error(errors)
-else:
-    in_set = []
-    with open("./number_set.txt", "r") as training_file:
-            readlines = training_file.readlines()
-            for idx in range(int(len(readlines) / 7)):
-                line_range = readlines[idx * 7 : (idx + 1) * 7]
-                num_array = [-1]
-                for line in line_range:
-                    num_array +=  [int(n) for n in line.split()]
-                in_set.append(num_array)
-            training_file.close()
-
-    if ej == 2:
-        # EJERCICIO 2: PAR O IMPAR
-
-        print("Solving number classification")
-        out_set = [[1], [-1]] * 5
-
-        in_set, out_set = Utils.shuffle_two_arrays(in_set, out_set)
-
-        k = 10
-        in_parts = np.array_split(in_set, k)
-        out_parts = np.array_split(out_set, k)
-
-        met = []
-        best_metric = [0]
-
-        # TODO: ver cuando hacer y no hacer la validacion cruzada
-        # for i in range(k):
-        #     training_set_in = []
-        #     training_set_out = []
-        #     for idx, part in enumerate(in_parts):
-        #         if idx != i:
-        #             training_set_in += list(part)
-        #             training_set_out += list(out_parts[idx])
-            
-        training_set = {"in": in_set, "out": out_set}
-        test_set = {"in": [], "out": []}
-        # print("[ k =", i, "]:", end=" ")
-        errors, metrics = Multilayer([5, 1], 35, 0.1).solve(training_set, test_set, 0.01)
-
-        # if max(metrics) > max(best_metric):
-        #     print("METRICA:", max(metrics))
-        #     best_metric = metrics
-
+        errors, metrics = Multilayer([2, 1], 2, params["eta"]).solve(training_set, test_set, params["error_bound"])
         plot_error(errors)
-        # plot_metric(met, k)
-
     else:
-        # EJERCICIO 3: NUMERO
-        # el training set es el mismo
-        
-        # ## PRINTS INTERFERENCE NUMBER ##
-        # for i, picture in enumerate(in_set):
-        #     picture = picture[1:]
-        #     for j in range(len(picture)):
-        #         rnd = np.random.uniform()
-        #         if rnd < 0.02:
-        #             picture[j] = 1 - picture[j]
-        #         if j % 5 == 0:
-        #             print()
-        #         else:
-        #             print(picture[j], end=" ")
-        #     print()
+        in_set = []
+        with open("./number_set.txt", "r") as training_file:
+                readlines = training_file.readlines()
+                for idx in range(int(len(readlines) / 7)):
+                    line_range = readlines[idx * 7 : (idx + 1) * 7]
+                    num_array = [-1]
+                    for line in line_range:
+                        num_array +=  [int(n) for n in line.split()]
+                    in_set.append(num_array)
+                training_file.close()
 
-        print("Solving number classification")
-        out_set = []
-        # Fills out_set
-        for num in range(10):
-            expected_output = [0] * 10
-            expected_output[num] = 1
-            out_set.append(expected_output)
-        
-        # 5, 11, 10 anduvo bastante bien
-        # 9, 10 funciona muy bien tambien
-        multilayer = Multilayer([5, 11, 10], 35, 0.1)
-        training_set = {"in": in_set, "out": out_set}
-        test_set = {"in": [], "out": []}
-        errors, metrics = multilayer.solve(training_set, test_set, 0.01) 
-        plot_error(errors)
+        if params["item"] == "b":
+            # EJERCICIO 2: PAR O IMPAR
 
-        print("Antes de agregar ruido")
-        check_prediction(multilayer, in_set, out_set)
+            print("Solving number classification")
+            out_set = [[1], [-1]] * 5
 
-        # agregamos ruido a los datos
-        for i, picture in enumerate(in_set):
-            for j in range(len(picture)):
-                rnd = np.random.uniform()
-                if rnd < 0.02:
-                    picture[j] = 1 - picture[j]
+            in_set, out_set = Utils.shuffle_two_arrays(in_set, out_set)
 
-        print("Despues de agregar ruido")
-        check_prediction(multilayer, in_set, out_set)
+            k = params["k"]
+            in_parts = np.array_split(in_set, k)
+            out_parts = np.array_split(out_set, k)
+
+            met = []
+            best_metric = [0]
+
+            # TODO: ver cuando hacer y no hacer la validacion cruzada
+            # for i in range(k):
+            #     training_set_in = []
+            #     training_set_out = []
+            #     for idx, part in enumerate(in_parts):
+            #         if idx != i:
+            #             training_set_in += list(part)
+            #             training_set_out += list(out_parts[idx])
+                
+            training_set = {"in": in_set, "out": out_set}
+            test_set = {"in": [], "out": []}
+            # print("[ k =", i, "]:", end=" ")
+            errors, metrics = Multilayer([5, 1], 35, params["eta"]).solve(training_set, test_set, params["error_bound"])
+
+            # if max(metrics) > max(best_metric):
+            #     print("METRICA:", max(metrics))
+            #     best_metric = metrics
+
+            plot_error(errors)
+            # plot_metric(met, k)
+
+        else:
+            # EJERCICIO 3: NUMERO
+            # el training set es el mismo
+            
+            # ## PRINTS INTERFERENCE NUMBER ##
+            # for i, picture in enumerate(in_set):
+            #     picture = picture[1:]
+            #     for j in range(len(picture)):
+            #         rnd = np.random.uniform()
+            #         if rnd < 0.02:
+            #             picture[j] = 1 - picture[j]
+            #         if j % 5 == 0:
+            #             print()
+            #         else:
+            #             print(picture[j], end=" ")
+            #     print()
+
+            print("Solving number classification")
+            out_set = []
+            # Fills out_set
+            for num in range(10):
+                expected_output = [0] * 10
+                expected_output[num] = 1
+                out_set.append(expected_output)
+            
+            # 5, 11, 10 anduvo bastante bien
+            # 9, 10 funciona muy bien tambien
+            multilayer = Multilayer([5, 11, 10], 35, params["eta"])
+            training_set = {"in": in_set, "out": out_set}
+            test_set = {"in": [], "out": []}
+            errors, metrics = multilayer.solve(training_set, test_set, params["error_bound"]) 
+            plot_error(errors)
+
+            print("Antes de agregar ruido")
+            check_prediction(multilayer, in_set, out_set)
+
+            # agregamos ruido a los datos
+            for i, picture in enumerate(in_set):
+                for j in range(len(picture)):
+                    rnd = np.random.uniform()
+                    if rnd < 0.02:
+                        picture[j] = 1 - picture[j]
+
+            print("Despues de agregar ruido")
+            check_prediction(multilayer, in_set, out_set)
 
 
         

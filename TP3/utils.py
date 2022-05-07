@@ -6,6 +6,10 @@ class Utils:
     b = 0.8
 
     @staticmethod
+    def set_beta(beta):
+        Utils.b = beta
+
+    @staticmethod
     def shuffle_two_arrays(first, second):
         a = np.array(first)
         b = np.array(second)

@@ -19,6 +19,7 @@ class SimplePerceptron:
         iteration = 0
         converge_limit = 10**(-6.5)
         self.w = np.zeros(len(training_set["in"][0]))
+        # self.w = np.random.uniform(low=-0.5, high=0.5, size=(len(training_set["in"][0])))
         error = 1
         last_error = error
         min_error = p * 2
@@ -34,6 +35,7 @@ class SimplePerceptron:
             # i_x = np.random.randint(0, p)
 
             for i_x in range(p):
+                print(training_set["in"][i_x])
                 excitement = np.dot(training_set["in"][i_x], self.w)
                 activation = solve_type["activation"](excitement)
 
