@@ -1,11 +1,12 @@
 import numpy as np
 from utils import Utils
 
+
 class Perceptron:
     def __init__(self, eta, amount_of_inputs):
         self.amount_of_inputs = amount_of_inputs
         
-        self.w = np.random.uniform(low=-0.5, high=0.5, size=(amount_of_inputs))
+        self.w = np.random.uniform(low=-0.5, high=0.5, size=amount_of_inputs)
     
         self.eta = eta
         self.inputs = np.empty(amount_of_inputs)

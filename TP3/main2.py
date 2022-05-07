@@ -51,12 +51,12 @@ for i in range(k):
     training_set = {"in": training_set_in, "out": training_set_out}
     test_set = {"in": in_parts[i], "out": out_parts[i]}
     print("[ k =", i, "]:", end=" ")
-    w, errors, metrics, weights = SimplePerceptron(0.001, 10000).solve(training_set, test_set, solve_type)
+    w, errors, metrics, weights = SimplePerceptron(0.001, 10000).solve(training_set, test_set,
+                                                                       solve_type, False)
 
     if max(metrics) > max(best_metric):
         best_w = w
         best_metric = metrics
-
 
     if has_to_escalate:
         escalated_errors = np.array(errors)

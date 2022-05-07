@@ -4,6 +4,7 @@ from plotter import plot_error, plot_metric
 import numpy as np
 import sys
 
+
 def check_prediction(multilayer, in_set, out_set):
     pe = 0
     nope = 0
@@ -12,21 +13,21 @@ def check_prediction(multilayer, in_set, out_set):
         for n in np.subtract(out_set[i], np.array(res)):
             if abs(n) > 0.2:
                 print("no pega")
-                nope+=1
+                nope += 1
                 break
         print("pega")
-        pe+=1
+        pe += 1
+
 
 ej = 1
 if len(sys.argv) > 1:
     ej = int(sys.argv[1])
 
-
 if ej == 1:
     or_in_set = [[-1, -1, 1], [-1, 1, -1], [-1, -1, -1], [-1, 1, 1]]
     or_out_set = [[1], [1], [-1], [-1]]
-    training_set = {"in": or_in_set, "out":or_out_set}
-    test_set = {"in": [], "out":[]}
+    training_set = {"in": or_in_set, "out": or_out_set}
+    test_set = {"in": [], "out": []}
     print("Solving for XOR")
 
     errors, metrics = Multilayer([2, 1], 2, 0.5).solve(training_set, test_set, 0.001)
@@ -34,14 +35,14 @@ if ej == 1:
 else:
     in_set = []
     with open("./number_set.txt", "r") as training_file:
-            readlines = training_file.readlines()
-            for idx in range(int(len(readlines) / 7)):
-                line_range = readlines[idx * 7 : (idx + 1) * 7]
-                num_array = [-1]
-                for line in line_range:
-                    num_array +=  [int(n) for n in line.split()]
-                in_set.append(num_array)
-            training_file.close()
+        readlines = training_file.readlines()
+        for idx in range(int(len(readlines) / 7)):
+            line_range = readlines[idx * 7: (idx + 1) * 7]
+            num_array = [-1]
+            for line in line_range:
+                num_array += [int(n) for n in line.split()]
+            in_set.append(num_array)
+        training_file.close()
 
     if ej == 2:
         # EJERCICIO 2: PAR O IMPAR
@@ -66,7 +67,7 @@ else:
         #         if idx != i:
         #             training_set_in += list(part)
         #             training_set_out += list(out_parts[idx])
-            
+
         training_set = {"in": in_set, "out": out_set}
         test_set = {"in": [], "out": []}
         # print("[ k =", i, "]:", end=" ")
@@ -82,7 +83,7 @@ else:
     else:
         # EJERCICIO 3: NUMERO
         # el training set es el mismo
-        
+
         # ## PRINTS INTERFERENCE NUMBER ##
         # for i, picture in enumerate(in_set):
         #     picture = picture[1:]
@@ -103,13 +104,13 @@ else:
             expected_output = [0] * 10
             expected_output[num] = 1
             out_set.append(expected_output)
-        
+
         # 5, 11, 10 anduvo bastante bien
         # 9, 10 funciona muy bien tambien
         multilayer = Multilayer([5, 11, 10], 35, 0.1)
         training_set = {"in": in_set, "out": out_set}
         test_set = {"in": [], "out": []}
-        errors, metrics = multilayer.solve(training_set, test_set, 0.01) 
+        errors, metrics = multilayer.solve(training_set, test_set, 0.01)
         plot_error(errors)
 
         print("Antes de agregar ruido")
@@ -124,8 +125,3 @@ else:
 
         print("Despues de agregar ruido")
         check_prediction(multilayer, in_set, out_set)
-
-
-        
-    
-        
