@@ -52,7 +52,7 @@ def second_excercise(params: dict):
         training_set = {"in": training_set_in, "out": training_set_out}
         test_set = {"in": in_parts[i], "out": out_parts[i]}
         print("[ k =", i, "]:", end=" ")
-        w, errors, metrics, weights = SimplePerceptron(params["eta"], params["limit"]).solve(training_set, test_set, solve_type)
+        w, errors, metrics, weights = SimplePerceptron(params["eta"], params["limit"]).solve(training_set, test_set, solve_type, False)
 
         if max(metrics) > max(best_metric):
             best_w = w

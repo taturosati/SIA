@@ -79,20 +79,6 @@ def third_excercise(params: dict):
         else:
             # EJERCICIO 3: NUMERO
             # el training set es el mismo
-            
-            # ## PRINTS INTERFERENCE NUMBER ##
-            # for i, picture in enumerate(in_set):
-            #     picture = picture[1:]
-            #     for j in range(len(picture)):
-            #         rnd = np.random.uniform()
-            #         if rnd < 0.02:
-            #             picture[j] = 1 - picture[j]
-            #         if j % 5 == 0:
-            #             print()
-            #         else:
-            #             print(picture[j], end=" ")
-            #     print()
-
             print("Solving number classification")
             out_set = []
             # Fills out_set

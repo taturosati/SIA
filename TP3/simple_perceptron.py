@@ -36,7 +36,6 @@ class SimplePerceptron:
             # i_x = np.random.randint(0, p)
 
             for i_x in range(p):
-                print(training_set["in"][i_x])
                 excitement = np.dot(training_set["in"][i_x], self.w)
                 activation = solve_type["activation"](excitement)
 
@@ -45,7 +44,6 @@ class SimplePerceptron:
                     self.w[i] += delta_w
 
                 error = solve_type["error"](training_set["in"], training_set["out"], self.w, p)
-                print(error)
                 if solve_type == solve_type_lineal:
                     error = 2 * (error / p)
 
@@ -59,7 +57,6 @@ class SimplePerceptron:
                 if not is_stepped and abs(last_error - error) < converge_limit:
                     if len(test_set["in"]) > 0:
                         met.append(self.calculate_metric(test_set["in"], test_set["out"], solve_type))
-                        print(min(errors))
                     return self.w, errors, met, weights
                 last_error = error
 
@@ -76,7 +73,6 @@ class SimplePerceptron:
 
         # print("Final error:",error)
         # print("W:", self.w)
-        print(min(errors))
         return self.w, errors, met, weights
 
     def calculate_metric(self, test_in, test_out, solve_type):
