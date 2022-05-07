@@ -2,6 +2,7 @@ from utils import Utils
 from multilayer import Multilayer
 from plotter import plot_error, plot_metric
 import numpy as np
+import sys
 
 def check_prediction(multilayer, in_set, out_set):
     pe = 0
@@ -17,13 +18,16 @@ def check_prediction(multilayer, in_set, out_set):
         pe+=1
 
 ej = 1
+if len(sys.argv) > 1:
+    ej = int(sys.argv[1])
+
 
 if ej == 1:
     or_in_set = [[-1, -1, 1], [-1, 1, -1], [-1, -1, -1], [-1, 1, 1]]
     or_out_set = [[1], [1], [-1], [-1]]
     training_set = {"in": or_in_set, "out":or_out_set}
     test_set = {"in": [], "out":[]}
-    print("XOR")
+    print("Solving for XOR")
 
     errors, metrics = Multilayer([2, 1], 2, 0.5).solve(training_set, test_set, 0.001)
     plot_error(errors)
@@ -42,6 +46,7 @@ else:
     if ej == 2:
         # EJERCICIO 2: PAR O IMPAR
 
+        print("Solving number classification")
         out_set = [[1], [-1]] * 5
 
         in_set, out_set = Utils.shuffle_two_arrays(in_set, out_set)
@@ -53,25 +58,26 @@ else:
         met = []
         best_metric = [0]
 
-        for i in range(k):
-            training_set_in = []
-            training_set_out = []
-            for idx, part in enumerate(in_parts):
-                if idx != i:
-                    training_set_in += list(part)
-                    training_set_out += list(out_parts[idx])
+        # TODO: ver cuando hacer y no hacer la validacion cruzada
+        # for i in range(k):
+        #     training_set_in = []
+        #     training_set_out = []
+        #     for idx, part in enumerate(in_parts):
+        #         if idx != i:
+        #             training_set_in += list(part)
+        #             training_set_out += list(out_parts[idx])
             
-            training_set = {"in": training_set_in, "out": training_set_out}
-            test_set = {"in": in_parts[i], "out": out_parts[i]}
-            print("[ k =", i, "]:", end=" ")
-            errors, metrics = Multilayer([10, 1], 35, 0.01).solve(training_set, test_set, 0.01)
+        training_set = {"in": in_set, "out": out_set}
+        test_set = {"in": [], "out": []}
+        # print("[ k =", i, "]:", end=" ")
+        errors, metrics = Multilayer([5, 1], 35, 0.1).solve(training_set, test_set, 0.01)
 
-            if max(metrics) > max(best_metric):
-                print("METRICA:", max(metrics))
-                best_metric = metrics
+        # if max(metrics) > max(best_metric):
+        #     print("METRICA:", max(metrics))
+        #     best_metric = metrics
 
-            plot_error(errors)
-        plot_metric(met, k)
+        plot_error(errors)
+        # plot_metric(met, k)
 
     else:
         # EJERCICIO 3: NUMERO
@@ -90,7 +96,7 @@ else:
         #             print(picture[j], end=" ")
         #     print()
 
-
+        print("Solving number classification")
         out_set = []
         # Fills out_set
         for num in range(10):

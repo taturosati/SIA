@@ -3,12 +3,12 @@ from utils import Utils
 import numpy as np
 from threshold_perceptron import ThresholdPerceptron
 class Layer:
-    def __init__(self, eta, amount_of_perceptrons, amount_of_inputs, is_first_layer, is_last_layer):
+    def __init__(self, eta, amount_of_perceptrons, amount_of_inputs, is_last_layer):
         self.amount_of_perceptrons = amount_of_perceptrons
         self.amount_of_inputs = amount_of_inputs
-        self.perceptrons = [ThresholdPerceptron(eta, amount_of_inputs, is_first_layer)] if not is_last_layer else []
+        self.perceptrons = [ThresholdPerceptron(eta, amount_of_inputs)] if not is_last_layer else []
         for _ in range(0, self.amount_of_perceptrons):
-            self.perceptrons.append(Perceptron(eta, amount_of_inputs, is_first_layer))
+            self.perceptrons.append(Perceptron(eta, amount_of_inputs))
         
         if not is_last_layer:
             self.amount_of_perceptrons += 1

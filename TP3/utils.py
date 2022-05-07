@@ -3,7 +3,7 @@ import numpy as np
 
 class Utils:
 
-    b = 0.15
+    b = 0.8
 
     @staticmethod
     def shuffle_two_arrays(first, second):
@@ -24,7 +24,7 @@ class Utils:
 
         arr = np.array(arr)
         arr = 2 * (arr - min_out) / (max_out - min_out) - 1
-        return arr
+        return arr, min_out, max_out
     
     @staticmethod
     def multiple_escalate(arr):

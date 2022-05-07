@@ -16,15 +16,15 @@ def plot(inputs, outputs, weights, title: str):
     x1 = -1.5
     x2 = 1.5
     
-    a = -(weights[1][1] / weights[1][2])
-    b = (weights[1][0] / weights[1][2])
+    a = -(weights[1][1] / weights[1][2]) if weights[1][2] != 0 else 1
+    b = (weights[1][0] / weights[1][2]) if weights[1][2] != 0 else 1
     f = lambda x: a * x + b
     line, = ax.plot([x1, x2], [f(x1), f(x2)], color="black")
 
     ax.set_title(title)
     def animate(i):
-        a = -(weights[i][1] / weights[i][2])
-        b = (weights[i][0] / weights[i][2])
+        a = -(weights[i][1] / weights[i][2]) if weights[i][2] != 0 else 1
+        b = (weights[i][0] / weights[i][2]) if weights[i][2] != 0 else 1
         f = lambda x: a * x + b
         line.set_ydata([f(x1), f(x2)])
 

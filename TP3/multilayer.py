@@ -3,12 +3,11 @@ from layer import Layer
 from utils import Utils
 
 class Multilayer:
-    def __init__(self, layer_sizes, pattern_size, eta): # layer_sizes = [2, 1]
+    def __init__(self, layer_sizes, pattern_size, eta):
         self.layer_sizes = layer_sizes
         self.layers = []
         for idx, layer_size in enumerate(layer_sizes):
-            is_first_layer = idx == 0
-            self.layers.append(Layer(eta, layer_size, (pattern_size if idx == 0 else layer_sizes[idx - 1]) + 1, is_first_layer, idx == len(layer_sizes) - 1))
+            self.layers.append(Layer(eta, layer_size, (pattern_size if idx == 0 else layer_sizes[idx - 1]) + 1, idx == len(layer_sizes) - 1))
 
     def solve(self, training_set, test_set, error_bound):
         error = error_bound + 1

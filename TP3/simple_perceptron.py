@@ -44,7 +44,10 @@ class SimplePerceptron:
                 error = solve_type["error"](training_set["in"], training_set["out"], self.w, p)
                 if solve_type == solve_type_lineal:
                     error = 2*(error/p)
+
                 errors.append(error)
+                weights.append(np.copy(self.w))
+
                 if error < min_error:
                     min_error = error
                     w_min = self.w
@@ -52,10 +55,9 @@ class SimplePerceptron:
                     if len(test_set["in"]) > 0:
                         met.append(self.calculate_metric(test_set["in"], test_set["out"], solve_type))
                         print(min(errors))
-                    return self.w, errors, met
+                    return self.w, errors, met, weights
                 last_error = error
 
-            weights.append(np.copy(self.w))
 
             if len(test_set["in"]) > 0:
                 met.append(self.calculate_metric(test_set["in"], test_set["out"], solve_type))
@@ -72,14 +74,14 @@ class SimplePerceptron:
         # print("Final error:",error)
         # print("W:", self.w)
         print(min(errors))
-        return self.w, errors, met
+        return self.w, errors, met, weights
 
     def calculate_metric(self, test_in, test_out, solve_type):
         pe = 0
         nope = 0
         for i in range(len(test_out)):
             res = self.predict(test_in[i], solve_type)
-            if (abs(test_out[i] - res) < 0.01):
+            if (abs(test_out[i] - res) < 0.05):
                 pe += 1
             else:
                 nope += 1
