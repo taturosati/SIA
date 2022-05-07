@@ -11,7 +11,7 @@ def first_excercise(params: dict):
         w, e, m, weights = SimplePerceptron(params["eta"], params["limit"]).solve({"in": or_in_set, "out": or_out_set}, {"in": [], "out": []}, solve_type_step)
         plot_error(e)
         plot(or_in_set, or_out_set, weights, 'Grafico')
-        
+
     else:
         # el -1 al principio de cada ejemplo de entrenamiento es el umbral
         and_in_set = [[-1, -1, 1], [-1, 1, -1], [-1, -1, -1], [-1, 1, 1]]
