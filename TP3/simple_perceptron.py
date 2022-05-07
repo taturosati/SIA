@@ -4,8 +4,9 @@ from plotter import plot
 from utils import Utils, solve_type_lineal
 
 class SimplePerceptron:
-    def __init__(self, limit):
+    def __init__(self, eta, limit):
         self.limit = limit
+        self.eta = eta
     
     def predict(self, in_set, solve_type: dict):
         excitement = np.dot(in_set, self.w)
@@ -16,8 +17,7 @@ class SimplePerceptron:
         p = len(training_set["in"])
         errors = []
         iteration = 0
-        eta = 0.001  # tasa de aprendizaje
-        converge_limit = 10**(-8)
+        converge_limit = 10**(-6.5)
         self.w = np.zeros(len(training_set["in"][0]))
         error = 1
         last_error = error
@@ -38,7 +38,7 @@ class SimplePerceptron:
                 activation = solve_type["activation"](excitement)
 
                 for i in range(0, len(self.w)):
-                    delta_w = eta * (training_set["out"][i_x] - activation) * training_set["in"][i_x][i] * solve_type["mult"](excitement)
+                    delta_w = self.eta * (training_set["out"][i_x] - activation) * training_set["in"][i_x][i] * solve_type["mult"](excitement)
                     self.w[i] += delta_w 
 
                 error = solve_type["error"](training_set["in"], training_set["out"], self.w, p)
