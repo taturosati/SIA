@@ -9,11 +9,18 @@ def check_prediction(multilayer, in_set, out_set):
     nope = 0
     for i, in_ix in enumerate(in_set):
         res = multilayer.predict(in_ix)
+        print(i, end=" ")
+        print(res, end=" ")
+        print(out_set[i])
+        found = False
         for n in np.subtract(out_set[i], np.array(res)):
             if abs(n) > 0.2:
                 nope+=1
+                found = True
                 break
-        pe+=1
+        if not found:
+            pe+=1
+    
 
 def third_excercise(params: dict):
     if params["item"] == "a":
@@ -54,7 +61,6 @@ def third_excercise(params: dict):
             all_errors = []
             all_metrics = []
 
-            # TODO: ver cuando hacer y no hacer la validacion cruzada
             if params["validation"] == True:
                 for i in range(k):
                     training_set_in = []
@@ -64,20 +70,16 @@ def third_excercise(params: dict):
                             training_set_in += list(part)
                             training_set_out += list(out_parts[idx])
                 
-                    training_set = {"in":  training_set_in, "out": training_set_out}
+                    training_set = {"in": training_set_in, "out": training_set_out}
                     test_set = {"in": in_parts[i], "out": out_parts[i]}
                     # print(test_set)
                     # print("[ k =", i, "]:", end=" ")
-                    errors, metrics = Multilayer([5, 1], 35, params["eta"]).solve(training_set, test_set, params["error_bound"])
+                    errors, metrics = Multilayer([5, 1], 35, params["eta"]).solve(training_set, test_set, params["error_bound"], 1)
                     all_errors.append(errors)
                     all_metrics.append(metrics)
                 plot_all_errors(all_errors)
                 plot_all_metrics(all_metrics)
 
-
-            # if max(metrics) > max(best_metric):
-            #     print("METRICA:", max(metrics))
-            #     best_metric = metrics
             else:         
                 training_set = {"in":  in_set, "out": out_set}
                 test_set = {"in": [], "out": []}
@@ -91,7 +93,7 @@ def third_excercise(params: dict):
             out_set = []
             # Fills out_set
             for num in range(10):
-                expected_output = [0] * 10
+                expected_output = [-1] * 10
                 expected_output[num] = 1
                 out_set.append(expected_output)
             
@@ -99,23 +101,39 @@ def third_excercise(params: dict):
             # 9, 10 funciona muy bien tambien
             multilayer = Multilayer([5, 11, 10], 35, params["eta"])
             training_set = {"in": in_set, "out": out_set}
-            test_set = {"in": [], "out": []}
-            errors, metrics = multilayer.solve(training_set, test_set, params["error_bound"]) 
-            plot_error(errors)
-            plot_metric(metrics)
 
-            print("Antes de agregar ruido")
-            check_prediction(multilayer, in_set, out_set)
+            test_set_in = []
+            test_set_out = []
+            for k in range(10):
+                for i, picture in enumerate(in_set):
+                    picture_copy = np.copy(picture)
+                    for j in range(len(picture)):
+                        rnd = np.random.uniform()
+                        if rnd < 0.02:
+                            picture_copy[j] = 1 - picture_copy[j]
+                    
+                    test_set_in.append(picture_copy)
+                    test_set_out.append(out_set[i])
+
+            test_set = {"in": test_set_in, "out": test_set_out}
+
+            errors, metrics = multilayer.solve(training_set, test_set, params["error_bound"], 0.1) 
+            plot_error(errors)
+            plot_metric(metrics, len(metrics))
+
+            # print("Antes de agregar ruido")
+            # check_prediction(multilayer, in_set, out_set)
 
             # agregamos ruido a los datos
-            for i, picture in enumerate(in_set):
-                for j in range(len(picture)):
-                    rnd = np.random.uniform()
-                    if rnd < 0.02:
-                        picture[j] = 1 - picture[j]
+            # for i, picture in enumerate(in_set):
+            #     for j in range(len(picture)):
+            #         rnd = np.random.uniform()
+            #         if rnd < 0.02:
+            #             picture[j] = 1 - picture[j]
 
-            print("Despues de agregar ruido")
-            check_prediction(multilayer, in_set, out_set)
+            # print("Despues de agregar ruido")
+            check_prediction(multilayer, test_set_in, test_set_out)
+            
 
 
         

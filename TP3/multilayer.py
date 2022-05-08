@@ -9,7 +9,7 @@ class Multilayer:
         for idx, layer_size in enumerate(layer_sizes):
             self.layers.append(Layer(eta, layer_size, (pattern_size if idx == 0 else layer_sizes[idx - 1]) + 1, idx == len(layer_sizes) - 1))
 
-    def solve(self, training_set, test_set, error_bound):
+    def solve(self, training_set, test_set, error_bound, metric_error_bound=0.1):
         error = error_bound + 1
         errors = []
         metrics = []
@@ -30,8 +30,10 @@ class Multilayer:
                 
                 error = self.calculate_error(training_set["in"], training_set["out"])
                 errors.append(error)
-            if len(test_set["in"])>0:
-                metrics.append(self.calculate_metric(test_set["in"], test_set["out"]))
+            
+            if len(test_set["in"]) > 0:
+                metrics.append(self.calculate_metric(test_set["in"], test_set["out"], metric_error_bound))
+
         return errors, metrics
 
     def predict(self, input):
@@ -49,13 +51,25 @@ class Multilayer:
             tot += self.layers[-1].calculate_error(correct_outputs[u])
         return tot / 2
 
-    def calculate_metric(self, test_in, test_out):
+    def calculate_metric(self, test_in, test_out, error_bound=0.1):
         pe = 0
         nope = 0
-        for i in range(len(test_out)):
-            res = self.predict(test_in[i])
-            if (sum([abs(n) for n in np.subtract(test_out[i], np.array(res))]) <= 0.1):
+        for i, in_ix in enumerate(test_in):
+            res = self.predict(in_ix)
+            found = False
+            for n in np.subtract(test_out[i], np.array(res)):
+                if abs(n) > error_bound:
+                    nope += 1
+                    found = True
+                    break
+
+            if not found:
                 pe += 1
-            else:
-                nope += 1
+
+        # for i in range(len(test_out)):
+        #     res = self.predict(test_in[i])
+        #     if (sum([abs(n) for n in np.subtract(test_out[i], np.array(res))]) < error_bound):
+        #         pe += 1
+        #     else:
+        #         nope += 1
         return pe / (pe + nope)

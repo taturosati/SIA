@@ -26,6 +26,9 @@ with open(sys.argv[1], "r") as config_file:
         if "limit" in config:
             params["limit"] = int(config["limit"])
 
+        if "k" in config:
+            params["k"] = int(config["k"])
+
         excer = 1
         if "excer" in config and 1 <= int(config["excer"]) <=3:
             excer = int(config["excer"])
