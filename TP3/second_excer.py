@@ -45,9 +45,6 @@ def second_excercise(params: dict):
     in_parts = np.array_split(in_set, k)
     out_parts = np.array_split(out_set, k)
 
-    best_metric = [0]
-    best_w = []
-
     all_errors = []
     all_metrics = []
 
@@ -68,7 +65,8 @@ def second_excercise(params: dict):
         if has_to_escalate:
             escalated_errors = np.array(errors)
             desescaleted_errors = ((escalated_errors + min_esc) * (max_esc - min_esc) / 2) + 1
-            errors = desescaleted_errors
+            # errors = desescaleted_errors
+            print(min(desescaleted_errors), end=" ")
         print(min(errors))
 
         all_errors.append(errors)
