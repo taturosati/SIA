@@ -31,6 +31,7 @@ def third_excercise(params: dict):
         print("Solving for XOR")
 
         errors, metrics = Multilayer([2, 1], 2, params["eta"]).solve(training_set, test_set, params["error_bound"])
+        print(min(errors))
         plot_error(errors)
     else:
         in_set = []
@@ -73,9 +74,10 @@ def third_excercise(params: dict):
                     training_set = {"in": training_set_in, "out": training_set_out}
                     test_set = {"in": in_parts[i], "out": out_parts[i]}
                     # print(test_set)
-                    # print("[ k =", i, "]:", end=" ")
+                    print("[ k =", i, "]:", end=" ")
                     errors, metrics = Multilayer([5, 1], 35, params["eta"]).solve(training_set, test_set, params["error_bound"], 1)
                     all_errors.append(errors)
+                    print(min(errors))
                     all_metrics.append(metrics)
                 plot_all_errors(all_errors)
                 plot_all_metrics(all_metrics)
@@ -84,7 +86,9 @@ def third_excercise(params: dict):
                 training_set = {"in":  in_set, "out": out_set}
                 test_set = {"in": [], "out": []}
                 errors, metrics = Multilayer([5, 1], 35, params["eta"]).solve(training_set, test_set, params["error_bound"])   
+                print(min(errors))
                 plot_error(errors)
+
 
         else:
             # EJERCICIO 3: NUMERO
