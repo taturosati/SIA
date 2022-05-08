@@ -15,7 +15,7 @@ exercises = [first_excercise, second_excercise, third_excercise]
 with open(sys.argv[1], "r") as config_file:
         config = json.load(config_file)
 
-        params = {'item': "a",'beta': 0.6, 'eta': 0.01, 'limit': 10000, 'k': 10, 'error_bound': 0.01}
+        params = {'item': "a",'beta': 0.6, 'eta': 0.01, 'limit': 10000, 'k': 10, 'error_bound': 0.01, 'validation': False}
         if "beta" in config:
             params["beta"] = float(config["beta"])
             Utils.set_beta(params["beta"])
@@ -42,6 +42,9 @@ with open(sys.argv[1], "r") as config_file:
         else:
             if "error_bound" in config:
                 params["error_bound"] = float(config["error_bound"])
+            if "validation" in config:
+                params["validation"] = bool(config["validation"])
+                print("With" if params["validation"] else "Without", "validation")
             third_excercise(params)
 
 config_file.close()

@@ -63,7 +63,6 @@ def second_excercise(params: dict):
             errors = desescaleted_errors
         print(min(errors))
 
-        # plot_error(errors)
         all_errors.append(errors)
         all_metrics.append(metrics)
     

@@ -29,7 +29,6 @@ class Multilayer:
                     self.layers[i - 1].calculate_delta(self.layers[i].get_weighted_deltas())
                 
                 error = self.calculate_error(training_set["in"], training_set["out"])
-                print(error)
                 errors.append(error)
             if len(test_set["in"])>0:
                 metrics.append(self.calculate_metric(test_set["in"], test_set["out"]))
@@ -55,7 +54,7 @@ class Multilayer:
         nope = 0
         for i in range(len(test_out)):
             res = self.predict(test_in[i])
-            if (sum([abs(n) for n in np.subtract(test_out[i], np.array(res))]) <= 0.01):
+            if (sum([abs(n) for n in np.subtract(test_out[i], np.array(res))]) <= 0.1):
                 pe += 1
             else:
                 nope += 1

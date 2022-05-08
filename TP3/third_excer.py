@@ -1,3 +1,4 @@
+from plotter import plot_all_errors, plot_all_metrics
 from utils import Utils
 from multilayer import Multilayer
 from plotter import plot_error, plot_metric
@@ -10,14 +11,11 @@ def check_prediction(multilayer, in_set, out_set):
         res = multilayer.predict(in_ix)
         for n in np.subtract(out_set[i], np.array(res)):
             if abs(n) > 0.2:
-                print("no pega")
                 nope+=1
                 break
-        print("pega")
         pe+=1
 
 def third_excercise(params: dict):
-
     if params["item"] == "a":
         or_in_set = [[-1, -1, 1], [-1, 1, -1], [-1, -1, -1], [-1, 1, 1]]
         or_out_set = [[1], [1], [-1], [-1]]
@@ -53,27 +51,38 @@ def third_excercise(params: dict):
 
             met = []
             best_metric = [0]
+            all_errors = []
+            all_metrics = []
 
             # TODO: ver cuando hacer y no hacer la validacion cruzada
-            # for i in range(k):
-            #     training_set_in = []
-            #     training_set_out = []
-            #     for idx, part in enumerate(in_parts):
-            #         if idx != i:
-            #             training_set_in += list(part)
-            #             training_set_out += list(out_parts[idx])
+            if params["validation"] == True:
+                for i in range(k):
+                    training_set_in = []
+                    training_set_out = []
+                    for idx, part in enumerate(in_parts):
+                        if idx != i:
+                            training_set_in += list(part)
+                            training_set_out += list(out_parts[idx])
                 
-            training_set = {"in": in_set, "out": out_set}
-            test_set = {"in": [], "out": []}
-            # print("[ k =", i, "]:", end=" ")
-            errors, metrics = Multilayer([5, 1], 35, params["eta"]).solve(training_set, test_set, params["error_bound"])
+                    training_set = {"in":  training_set_in, "out": training_set_out}
+                    test_set = {"in": in_parts[i], "out": out_parts[i]}
+                    # print(test_set)
+                    # print("[ k =", i, "]:", end=" ")
+                    errors, metrics = Multilayer([5, 1], 35, params["eta"]).solve(training_set, test_set, params["error_bound"])
+                    all_errors.append(errors)
+                    all_metrics.append(metrics)
+                plot_all_errors(all_errors)
+                plot_all_metrics(all_metrics)
+
 
             # if max(metrics) > max(best_metric):
             #     print("METRICA:", max(metrics))
             #     best_metric = metrics
-
-            plot_error(errors)
-            # plot_metric(met, k)
+            else:         
+                training_set = {"in":  in_set, "out": out_set}
+                test_set = {"in": [], "out": []}
+                errors, metrics = Multilayer([5, 1], 35, params["eta"]).solve(training_set, test_set, params["error_bound"])   
+                plot_error(errors)
 
         else:
             # EJERCICIO 3: NUMERO
@@ -93,6 +102,7 @@ def third_excercise(params: dict):
             test_set = {"in": [], "out": []}
             errors, metrics = multilayer.solve(training_set, test_set, params["error_bound"]) 
             plot_error(errors)
+            plot_metric(metrics)
 
             print("Antes de agregar ruido")
             check_prediction(multilayer, in_set, out_set)
