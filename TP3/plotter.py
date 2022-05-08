@@ -46,6 +46,21 @@ def plot_error(errors):
     ax.legend()
     plt.show()
 
+def plot_all_errors(all_errors):
+    fig, ax = plt.subplots(figsize=(5, 3), layout="constrained")
+
+    ax.set_xlabel("Iteración")
+    ax.set_ylabel("Error")
+    ax.locator_params("y")
+    ax.locator_params("x")
+    for idx, errors in enumerate(all_errors):
+        x = np.array(range(len(errors)))
+        lab = "k:" + str(idx)
+        ax.plot(x, errors, label=str(lab))
+    ax.set_title("Error por iteración")
+    ax.legend()
+    plt.show()
+
 def plot_metric(met, epoch):
     x = np.array(range(epoch))
 
@@ -56,6 +71,21 @@ def plot_metric(met, epoch):
     ax.locator_params("y")
     ax.locator_params("x")
     ax.plot(x, met, label="Metrica", color="b")
+    ax.set_title("Metrica por Epoca")
+    ax.legend()
+    plt.show()
+
+def plot_all_metrics(all_met):
+    fig, ax = plt.subplots(figsize=(5, 3), layout="constrained")
+
+    ax.set_xlabel("Epocas")
+    ax.set_ylabel("Metrica")
+    ax.locator_params("y")
+    ax.locator_params("x")
+    for idx, met in enumerate(all_met):
+        x = np.array(range(len(met)))
+        lab = "k:" + str(idx)
+        ax.plot(x, met, label=str(lab))
     ax.set_title("Metrica por Epoca")
     ax.legend()
     plt.show()

@@ -1,5 +1,5 @@
 import numpy as np
-from plotter import plot_error, plot_metric
+from plotter import plot_error, plot_metric, plot_all_errors, plot_all_metrics
 from simple_perceptron import SimplePerceptron
 from utils import Utils, solve_type_step, solve_type_lineal, solve_type_not_lineal
 
@@ -40,6 +40,9 @@ def second_excercise(params: dict):
     best_metric = [0]
     best_w = []
 
+    all_errors = []
+    all_metrics = []
+
     for i in range(k):
         training_set_in = []
         training_set_out = []
@@ -53,18 +56,16 @@ def second_excercise(params: dict):
         print("[ k =", i, "]:", end=" ")
         w, errors, metrics, weights = SimplePerceptron(params["eta"], params["limit"]).solve(training_set, test_set, solve_type, False)
 
-        if max(metrics) > max(best_metric):
-            best_w = w
-            best_metric = metrics
-
 
         if has_to_escalate:
             escalated_errors = np.array(errors)
             desescaleted_errors = ((escalated_errors + min_esc) * (max_esc - min_esc) / 2) + 1
             errors = desescaleted_errors
+        print(min(errors))
 
-        plot_error(errors)
-
-
-    print('BEST: ' + str(max(best_metric)))
-    plot_metric(best_metric, len(best_metric))
+        # plot_error(errors)
+        all_errors.append(errors)
+        all_metrics.append(metrics)
+    
+    plot_all_errors(all_errors)
+    plot_all_metrics(all_metrics)
