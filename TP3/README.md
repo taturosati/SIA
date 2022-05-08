@@ -34,9 +34,11 @@ Mediante el uso de una red neuronal de 2 capas, la capa oculta con 2 neuronas y 
 
 Se le presenta a la red multicapa un conjunto imagenes de 5x7 pixeles en las cuales se representan numeros del 0 al 9. En base a esto, la idea es que la red aprenda a discernir si el numero presentado es par o impar.
 
-En cuanto a la capacidad de generalización, utilzando el mismo sistema de evaluacion que en el ejercicio 2, pudimos observar que la red no tiene capacidad para generalizar. Esto se debe posiblemente a 2 cosas. Primero, puede deberse a que la cantidad de pixeles utilzados son muy pocos por lo que
+En cuanto a la capacidad de generalización, utilzando el mismo sistema de evaluacion que en el ejercicio 2, pudimos observar que la red no tiene capacidad para generalizar. Esto se debe posiblemente a 2 cosas. Primero, puede deberse a que la cantidad de pixeles utilzados son muy pocos por lo que un cambio en un pixel puede variar completamente la predicción de la red. Segundo, entendemos que no hay una relacion entre la forma de representar un numero con su paridad
 
 ### Item c
+
+Parecido al item b, se presenta a la red multicapa el mismo conjunto de imagenes pero la diferencia es el objetivo. En este item, se busca que la red sepa diferenciar el numero que se le presento. Luego, una vez que la capa haya entrenado, al mismo conjunto de datos se les agrega ruido para probar que si la red puede seguir diferenciando los numeros de entrada
 
 ## Dependencias
 
@@ -49,9 +51,8 @@ pip install -r dependencies.txt
 2.  Asegurarse de tener instalado la version 3.9.\* de python
 3.  Tener en cuenta que los comandos python y pip tienen su equivalente en mac como python3 y pip3
 4.  Crear un archivo de configuración (El repositorio provee algunas configuraciones de ejemplo)
-5.  Asegurarse de tener en el mismo directorio un archivo llamado data.txt donde la primer linea tiene 2 columnas separadas por un espacio _[capacidad maxima de la mochila] [peso maximo de la mochila]_ y las siguientes representan cada elemento con su beneficio y su peso de la forma _[beneficio] [peso]_
 
-6.  Ejecutar el siguiente comando para iniciar el programa
+5.  Ejecutar el siguiente comando para iniciar el programa
 
         python main.py [config file]
 
@@ -90,9 +91,9 @@ Ejemplos:
 {
 	"excer": 2,
 	"item": "b",
-	"beta": 0.8,
-	"eta": 0.1,
-	"limit": 10000
+	"beta": 0.6,
+	"eta": 0.4,
+	"limit": 7500
 }
 ```
 
