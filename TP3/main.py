@@ -1,10 +1,9 @@
 from operator import xor
 import sys
 import json
-from sympy import E
-from main1 import first_excercise
-from main2 import second_excercise
-from main3 import third_excercise
+from first_excer import first_excercise
+from second_excer import second_excercise
+from third_excer import third_excercise
 from utils import Utils
 
 if len(sys.argv) == 1 or not str(sys.argv[1]).endswith(".json"):

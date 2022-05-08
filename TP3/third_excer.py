@@ -2,7 +2,6 @@ from utils import Utils
 from multilayer import Multilayer
 from plotter import plot_error, plot_metric
 import numpy as np
-import sys
 
 def check_prediction(multilayer, in_set, out_set):
     pe = 0

@@ -1,5 +1,4 @@
 import numpy as np
-import sys
 from plotter import plot_error, plot_metric
 from simple_perceptron import SimplePerceptron
 from utils import Utils, solve_type_step, solve_type_lineal, solve_type_not_lineal

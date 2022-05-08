@@ -1,5 +1,4 @@
 from plotter import plot_error, plot
-import sys
 from simple_perceptron import SimplePerceptron
 from utils import solve_type_step
 import numpy as np
