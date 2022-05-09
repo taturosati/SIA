@@ -61,15 +61,15 @@ pip install -r dependencies.txt
 Un archivo en formato .json con los siguientes parametros (cabe destacar que todos cuentan con un valor default):
 
 -   **beta**: Selecciona valor de ß
+-   **eta**: Selecciona el valor de eta
 -   **excer**: Selecciona el ejercicio a ejecutar
     -   Valores posibles: 1, 2, 3
 -   **item**: Selecciona el item del ejercicio elegido a ejecutar
     -   Valores posibles: a, b, c (según el ejercicio)
--   **beta**: Selecciona valor de ß
--   **eta**: Selecciona el valor de eta
+-   **validation**: Utiliza validacion cruzada en el ejercicio 2.b
 -   **k**: Selecciona la cantidad de partes a utilizar en el calculo de validación cruzada
 -   **limit**: Selecciona el limite de iteraciones
--   **error_bound**: Selecciona el limite de iteraciones
+-   **error_bound**: Selecciona el margen de error para la red multicapa
 
 Ejemplos:
 
@@ -92,6 +92,7 @@ Ejemplos:
 	"excer": 2,
 	"item": "b",
 	"beta": 0.6,
+	"validation": true,
 	"eta": 0.4,
 	"limit": 7500
 }
