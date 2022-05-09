@@ -46,6 +46,3 @@ class Layer:
         for i in range(len(correct_output)):
             tot += (correct_output[i] - self.perceptrons[i].get_activation()) ** 2
         return tot
-    # def learn(self, training_set):
-    #     for p in self.perceptrons:
-    #         p.learn()
