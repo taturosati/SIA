@@ -62,14 +62,6 @@ class Multilayer:
                     nope += 1
                     found = True
                     break
-
             if not found:
                 pe += 1
-
-        # for i in range(len(test_out)):
-        #     res = self.predict(test_in[i])
-        #     if (sum([abs(n) for n in np.subtract(test_out[i], np.array(res))]) < error_bound):
-        #         pe += 1
-        #     else:
-        #         nope += 1
         return pe / (pe + nope)

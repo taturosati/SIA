@@ -4,24 +4,6 @@ from multilayer import Multilayer
 from plotter import plot_error, plot_metric
 import numpy as np
 
-def check_prediction(multilayer, in_set, out_set):
-    pe = 0
-    nope = 0
-    for i, in_ix in enumerate(in_set):
-        res = multilayer.predict(in_ix)
-        print(i, end=" ")
-        print(res, end=" ")
-        print(out_set[i])
-        found = False
-        for n in np.subtract(out_set[i], np.array(res)):
-            if abs(n) > 0.2:
-                nope+=1
-                found = True
-                break
-        if not found:
-            pe+=1
-    
-
 def third_excercise(params: dict):
     if params["item"] == "a":
         or_in_set = [[-1, -1, 1], [-1, 1, -1], [-1, -1, -1], [-1, 1, 1]]
@@ -31,6 +13,7 @@ def third_excercise(params: dict):
         print("Solving for XOR")
 
         errors, metrics = Multilayer([2, 1], 2, params["eta"]).solve(training_set, test_set, params["error_bound"])
+        print(min(errors))
         plot_error(errors)
     else:
         in_set = []
@@ -56,8 +39,6 @@ def third_excercise(params: dict):
             in_parts = np.array_split(in_set, k)
             out_parts = np.array_split(out_set, k)
 
-            met = []
-            best_metric = [0]
             all_errors = []
             all_metrics = []
 
@@ -72,10 +53,10 @@ def third_excercise(params: dict):
                 
                     training_set = {"in": training_set_in, "out": training_set_out}
                     test_set = {"in": in_parts[i], "out": out_parts[i]}
-                    # print(test_set)
-                    # print("[ k =", i, "]:", end=" ")
+                    print("[ k =", i, "]:", end=" ")
                     errors, metrics = Multilayer([5, 1], 35, params["eta"]).solve(training_set, test_set, params["error_bound"], 1)
                     all_errors.append(errors)
+                    print(min(errors))
                     all_metrics.append(metrics)
                 plot_all_errors(all_errors)
                 plot_all_metrics(all_metrics)
@@ -84,7 +65,9 @@ def third_excercise(params: dict):
                 training_set = {"in":  in_set, "out": out_set}
                 test_set = {"in": [], "out": []}
                 errors, metrics = Multilayer([5, 1], 35, params["eta"]).solve(training_set, test_set, params["error_bound"])   
+                print(min(errors))
                 plot_error(errors)
+
 
         else:
             # EJERCICIO 3: NUMERO
@@ -119,22 +102,9 @@ def third_excercise(params: dict):
 
             errors, metrics = multilayer.solve(training_set, test_set, params["error_bound"], 0.1) 
             plot_error(errors)
+            print(min(errors))
             plot_metric(metrics, len(metrics))
-
-            # print("Antes de agregar ruido")
-            # check_prediction(multilayer, in_set, out_set)
-
-            # agregamos ruido a los datos
-            # for i, picture in enumerate(in_set):
-            #     for j in range(len(picture)):
-            #         rnd = np.random.uniform()
-            #         if rnd < 0.02:
-            #             picture[j] = 1 - picture[j]
-
-            # print("Despues de agregar ruido")
-            check_prediction(multilayer, test_set_in, test_set_out)
-            
-
+            print(max(metrics))
 
         
     

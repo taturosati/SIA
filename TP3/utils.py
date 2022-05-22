@@ -42,7 +42,7 @@ class Utils:
 
 
     @staticmethod
-    def activation_simple(h): # math.isclose(h, 0, rel_tol=1e-5) 
+    def activation_simple(h):
         return 1 if h >= 0 else -1
 
     @staticmethod

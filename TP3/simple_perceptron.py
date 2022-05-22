@@ -20,7 +20,6 @@ class SimplePerceptron:
         iteration = 0
         converge_limit = 10 ** (-6.5)
         self.w = np.zeros(len(training_set["in"][0]))
-        # self.w = np.random.uniform(low=-0.5, high=0.5, size=(len(training_set["in"][0])))
         error = 1
         last_error = 1
         min_error = p * 2
