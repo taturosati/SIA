@@ -19,6 +19,11 @@ with open('europe.csv', newline='') as csvfile:
     print(headers)
     # Fit transform
     results = model.fit_transform(rows, col_labels=headers, row_labels=countries)
+    print(results['loadings'])
+
+    print()
+
+    print(results['variance_ratio'])
 
     # Plot explained variance
     fig, ax = model.plot()
