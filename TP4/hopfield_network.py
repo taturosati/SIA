@@ -1,6 +1,5 @@
 import math
 import numpy as np
-from rsa import sign
 
 
 class HopfieldNetwork:
@@ -19,8 +18,11 @@ class HopfieldNetwork:
                     self.weights[i][j] /= self.size
     
     def solve(self, c):
+
         prev_states = np.copy(c)
         states = np.zeros(self.size)
+
+        historic_states = [prev_states]
 
         while np.not_equal(prev_states, states).all():
             for i in range(self.size):
@@ -31,9 +33,10 @@ class HopfieldNetwork:
 
                 states[i] = 1 if h > 0 else prev_states[i] if h == 0 else -1
             
+            historic_states.append(states)
             prev_states = np.copy(states)
 
-        return states
+        return states, historic_states
 
 
         
