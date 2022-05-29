@@ -1,12 +1,14 @@
 import json
 import numpy as np
+from sympy import unflatten
+from plotter import plot_heatmap
 from hopfield_network import HopfieldNetwork
 import math
 
 with open('letters.json', "r") as letters_file:
     patterns = json.load(letters_file)
     letters_file.close()
-
+unflatten_pat = np.array(patterns)
 patterns = np.array([np.array(pattern).flatten() for pattern in patterns])
 best = []
 min_dist = math.inf
@@ -25,6 +27,8 @@ for i in range(len(patterns) - 3):
                     min_dist = dist
                     best = [i, j, k, l]
 
+for lett in best:
+    plot_heatmap(unflatten_pat[lett]*-1, "")
 
 print([chr(ord('A') + i) for i in best])
 patterns = [patterns[i] for i in best]
@@ -36,27 +40,19 @@ for i in range(len(noisy_patterns)):
         if np.random.rand() < 0.05:
             noisy_patterns[i][j] = -noisy_patterns[i][j]
 
-# print(noisy_patterns[1])
-res, historic = network.solve(noisy_patterns[1])
-for i in range(5):
-    print(res[5*i: 5*(i+1)])
-    
+res, historic = network.solve(noisy_patterns[0])
 for idx, his in enumerate(historic):
     print("Paso", idx, ":")
-    for i in range(5):
-        print(his[5*i: 5*(i+1)])
+    plot_heatmap(his.reshape(5, 5) * -1, "Paso " + str(idx))
 
-# noisy_p = patterns[0]
-# for i in range(len(noisy_p)):
-#     if np.random.rand() < 0.3:
-#         noisy_p[i] = -noisy_p[i]
+noisy_p = patterns[0]
+for i in range(len(noisy_p)):
+    if np.random.rand() < 0.3:
+        noisy_p[i] = -noisy_p[i]
 
-# res, historic = network.solve(noisy_p)
+res, historic = network.solve(noisy_p)
 
-# for idx, his in enumerate(historic):
-#     print("Paso", idx, ":")
-#     for i in range(5):
-#         print(his[5*i: 5*(i+1)])
+for idx, his in enumerate(historic):
+    print("Paso", idx, ":")
+    plot_heatmap(his.reshape(5, 5) * -1, "Paso " + str(idx))
 
-# # for i in range(5):
-# #     print(res[5*i: 5*(i+1)])

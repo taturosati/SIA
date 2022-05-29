@@ -1,7 +1,6 @@
 import csv
 import numpy as np
 from sklearn.preprocessing import StandardScaler
-from kohonen_network import KohonenNetwork
 
 from oja_rule import OjaRule
 

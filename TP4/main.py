@@ -34,5 +34,5 @@ with open('europe.csv', newline='') as csvfile:
         print("(" + str(row) + ", " + str(col) + ")")
             
     print(winners_asociated)
-    plot_heatmap(winners_asociated)
-    plot_heatmap(network.u_matrix())
+    plot_heatmap(winners_asociated, "Solución")
+    plot_heatmap(network.u_matrix(), "Matriz U")

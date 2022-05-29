@@ -40,14 +40,10 @@ class KohonenNetwork:
         rad = self.radius
         eta = self.eta
         
-        for t in range(len(patterns[0]) * 500):
-            # self.eta = 1 / (t + 2)  # TODO: tiene que ser menor a 1, pero hay que ver si esta bien
-
+        for t in range(1, len(patterns[0]) * 500 + 1):
             pattern = patterns[np.random.choice(len(patterns))]
             winner = self.find_winner(pattern)
-
             self.update_neighborhood(winner, pattern)
-            # if self.radius > 1:
             self.radius = rad * math.exp(-t/dec_rate)
             self.eta = eta * math.exp(-t/dec_rate)
 
