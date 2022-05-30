@@ -1,41 +1,47 @@
-import csv
-import numpy as np
-from sklearn.preprocessing import StandardScaler
-from kohonen_network import KohonenNetwork
-from plotter import plot_heatmap
+import json
+import sys
+from exercise_1_b import exercise_1_b
+from excercise_1_a import exercise_1_a
+from exercise_2 import exercise_2
 
-with open('europe.csv', newline='') as csvfile:
-    # create np array with csv rows
-    rows = np.array(list(csv.reader(csvfile, delimiter=',')))
-    headers = np.array(rows[0][1:])
-    rows = rows[1:]  # ignoro headers
-    countries = [row[0] for row in rows]  # me quedo con los paises para poner los labels
-    rows = np.array([row[1:] for row in rows])  # elimino pais
+if len(sys.argv) == 1 or not str(sys.argv[1]).endswith(".json"):
+    print("Please enter the configuration file (e.g. python3 main.py config.json)")
+    exit()
 
-    rows = rows.astype(float)
 
-    csvfile.close()
+with open(sys.argv[1], "r") as config_file:
+    config = json.load(config_file)
+    params = {'exercise': 1, 'item': 'a', 'eta': 0.0001, 'limit': 50000, 'grid_k': 4, 'spurius_noise': 0.3, 'noise': 0.05, 'radius': 2}
+    if "exercise" in config and 1 <= int(config["exercise"]) <= 2:
+        params["exercise"] = int(config["exercise"])
+    
+    if "item" in config and len(config["item"]) == 1:
+        params["item"] = config["item"]    
 
-    rows = StandardScaler().fit_transform(rows)
-    # print("Patterns:")
-    # print(rows)
+    if params["exercise"] == 1:
+        if params["item"] == 'a':
+            if "eta" in config and 0 < float(config["eta"]) <= 0.5:
+                params["eta"] = float(config["eta"])
+                
+            if "grid_k" in config and 1 <= int(config["grid_k"]):
+                params["grid_k"] = int(config["grid_k"])
 
-    grid_k = 4
+            if "radius" in config and 0 < float(config["radius"]):
+                params["radius"] = float(config["radius"])
+                
+            exercise_1_a(params)
+        else:
+            if "eta" in config and 0 < float(config["eta"]) <= 0.5:
+                params["eta"] = float(config["eta"])
+            if "limit" in config and 1 <= int(config["limit"]):
+                params["limit"] = int(config["limit"])
 
-    network = KohonenNetwork(eta=0.1, limit=0.1, grid_k=grid_k, radius=grid_k)
+            exercise_1_b(params)
+    else:
+        if "noise" in config and 0 < int(config["noise"]) < 0.5:
+            params["noise"] = int(config["noise"])
+        
+        if "spurius_noise" in config and 0 < int(config["spurius_noise"]) < 0.5:
+            params["spurius_noise"] = int(config["spurius_noise"])
 
-    network.solve(rows)
-
-    winners_associated = np.zeros((grid_k, grid_k))
-    winners = network.find_all_winners(rows)
-    labels = np.empty(dtype="U256", shape=(grid_k, grid_k))
-    for idx, (row, col) in enumerate(winners):
-        winners_associated[row][col] += 1
-        labels[row][col] += countries[idx] + "\n"
-        print(labels[row][col])
-        print(countries[idx], end=" ")
-        print("(" + str(row) + ", " + str(col) + ")")
-
-    print(winners_associated)
-    plot_heatmap(winners_associated, "Solución", labels)
-    plot_heatmap(network.u_matrix(), "Matriz U")
+        exercise_2(params)

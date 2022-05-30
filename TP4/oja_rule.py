@@ -6,7 +6,7 @@ class OjaRule:
         self.eta = eta
 
 
-    def solve(self, patterns):  # training_set: x, correct_output: y
+    def solve(self, patterns):
         p = len(patterns)
         iteration = 0
         self.w = np.random.uniform(-1, 1, len(patterns[0]))
@@ -22,18 +22,5 @@ class OjaRule:
                 excitement = np.dot(patterns[i_x], self.w)
                 delta_w = self.eta * excitement * (patterns[i_x] - excitement * self.w)
                 self.w += delta_w
-
-
-                # for j in range(len(self.w)):
-                #     delta_w = 0
-                #     for i in range(len(patterns)):
-                #         delta_w += self.eta * excitement * (patterns[i][j] - excitement * self.w[j])
-                    
-                #     self.w[j] += delta_w
-
-                # for i in range(0, len(self.w)):
-                #     for j in range(0, len(patterns[0])):
-                #         delta_w = self.eta * activation * (patterns[i][j] - activation * self.w[j])
-                #         self.w[j] += delta_w
 
         return self.w
