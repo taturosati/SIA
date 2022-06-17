@@ -1,69 +1,67 @@
 import numpy as np
-from layer import Layer
+from scipy import optimize
 from utils import Utils
+# from qiskit import algorithms
 
 class Multilayer:
-    def __init__(self, layer_sizes, pattern_size, eta):
+    def __init__(self, layer_sizes, pattern_size):
+        self.pattern_size = pattern_size
         self.layer_sizes = layer_sizes
-        self.layers = []
+        self.weights = []
         for idx, layer_size in enumerate(layer_sizes):
-            self.layers.append(Layer(eta, layer_size, (pattern_size if idx == 0 else layer_sizes[idx - 1] + 1), idx == len(layer_sizes) - 1))
-
-    def solve(self, training_set, test_set, error_bound, metric_error_bound=0.1):
-        error = error_bound + 1
-        errors = []
-        metrics = []
-        while error > error_bound:
-            training_set["in"], training_set["out"] = Utils.shuffle_two_arrays(training_set["in"], training_set["out"])
-
-            for u in range(len(training_set["in"])):
-
-                current_pattern = training_set["in"][u]
-                
-                self.layers[0].calculate_v(current_pattern)
-                for i in range(1, len(self.layer_sizes)):
-                    self.layers[i].calculate_v(self.layers[i - 1].get_output())
-                
-                self.layers[-1].calculate_last_deltas(training_set["out"][u])
-                for i in range(len(self.layer_sizes) - 1, 0, -1):
-                    self.layers[i - 1].calculate_delta(self.layers[i].get_weighted_deltas())
-                
-                error = self.calculate_error(training_set["in"], training_set["out"])
-                errors.append(error)
+            weights_size = (pattern_size if idx == 0 else (layer_sizes[idx - 1]))
+            layer_weights = np.empty(shape=(layer_size, weights_size))
+            for i in range(layer_size):
+                layer_weights[i] = np.random.uniform(low=-0.5, high=0.5, size=weights_size)
             
-            if len(test_set["in"]) > 0:
-                metrics.append(self.calculate_metric(test_set["in"], test_set["out"], metric_error_bound))
+            self.weights.append(layer_weights)
 
-        return errors, metrics
+    def solve(self, training_set):
+        self.training_set = training_set
+        weights = self.get_weights()
+        new_weights = optimize.minimize(self.calculate_error, self.get_weights(), method='Powell', bounds=[[-1, 1]] * len(weights))
+        # new_weights = algorithms.optimizers.ADAM(lr=1).optimize(len(weights), self.calculate_error, initial_point=self.get_weights())
 
-    def predict(self, input):
-        self.layers[0].calculate_v(input)
-        for i in range(1, len(self.layer_sizes)):
-            self.layers[i].calculate_v(self.layers[i - 1].get_output())
-        return self.layers[-1].get_output()
-    
-    def calculate_error(self, training_set, correct_outputs):
+        print(new_weights)
+        self.set_weights(new_weights)
+
+    def get_weights(self):
+        weights = []
+        for layer_weights in self.weights:
+            for pattern_weights in layer_weights:
+                for w in pattern_weights:
+                    weights.append(w)
+
+        return weights
+
+    def set_weights(self, weights):
+        i = 0
+        for layer_idx, layer_size in enumerate(self.layer_sizes):
+            weights_size = (self.pattern_size if layer_idx == 0 else (self.layer_sizes[layer_idx - 1]))
+            for perceptron_idx in range(layer_size):
+                for weight_idx in range(weights_size):
+                    self.weights[layer_idx][perceptron_idx][weight_idx] = weights[i]
+                    i += 1
+
+    def calculate_error_aux(self, training_set, correct_outputs):
         tot = 0
         for u in range(len(training_set)):
-            self.layers[0].calculate_v(training_set[u])
-            for i in range(1, len(self.layer_sizes)):
-                self.layers[i].calculate_v(self.layers[i - 1].get_output())
-            tot += self.layers[-1].calculate_error(correct_outputs[u])
+            prev_outputs = training_set[u]
+            for idx, layer_size in enumerate(self.layer_sizes):
+                outputs = np.empty(shape=(layer_size))
+                for i in range(layer_size):
+                    excitement = np.dot(prev_outputs, self.weights[idx][i])
+                    activation = Utils.g(excitement)
+                    if idx == len(self.layer_sizes) - 1:
+                        tot += (correct_outputs[u][i] - activation) ** 2
+                    
+                    outputs[i] = activation
+
+                prev_outputs = outputs
         
         print(tot/2);
         return tot / 2
 
-    def calculate_metric(self, test_in, test_out, error_bound=0.1):
-        pe = 0
-        nope = 0
-        for i, in_ix in enumerate(test_in):
-            res = self.predict(in_ix)
-            found = False
-            for n in np.subtract(test_out[i], np.array(res)):
-                if abs(n) > error_bound:
-                    nope += 1
-                    found = True
-                    break
-            if not found:
-                pe += 1
-        return pe / (pe + nope)
+    def calculate_error(self, weights):
+        self.set_weights(weights)
+        return self.calculate_error_aux(self.training_set["in"], self.training_set["out"])
