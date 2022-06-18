@@ -1,4 +1,5 @@
 import math
+from attr import s
 import numpy as np
 
 class Utils:
@@ -52,6 +53,10 @@ class Utils:
     @staticmethod
     def activation_not_lineal(h):
         return math.tanh(Utils.b * h)
+    
+    @staticmethod
+    def activation_relu(h):
+        return max(0, h)
 
     # x -> conjunto de entrenamiento
     # y -> salida deseada
