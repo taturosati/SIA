@@ -35,7 +35,7 @@ class Multilayer:
             self.get_weights(), 
             method='Powell', 
             bounds=[[-1, 1]] * len(weights), 
-            options={'xtol': 0.5}
+            options={'xtol': 1e-2, 'ftol': 1e-2}
         )
         # new_weights = algorithms.optimizers.ADAM().optimize(len(weights), self.calculate_error, initial_point=self.get_weights())
 
@@ -128,5 +128,11 @@ class Multilayer:
         print(weight_start_idx)
         input_pattern = [-1, *input_pattern]
         decoder_output, weight_start_idx = self.get_decoder_output(self.get_weights(), input_pattern, weight_start_idx)
+        return decoder_output
+
+    def output(self, input_pattern):
+        encoder_output, weight_start_idx = self.get_encoder_output(self.get_weights(), input_pattern)
+        latent_output, weight_start_idx = self.get_latent_output(self.get_weights(), encoder_output, weight_start_idx)
+        decoder_output, weight_start_idx = self.get_decoder_output(self.get_weights(), latent_output, weight_start_idx)
         return decoder_output
 
