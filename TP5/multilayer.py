@@ -1,3 +1,4 @@
+from logging import exception
 import numpy as np
 from scipy import optimize
 from utils import Utils
@@ -6,10 +7,13 @@ from utils import Utils
 class Multilayer:
     def __init__(self, layer_sizes, pattern_size):
         self.pattern_size = pattern_size
+        layer_sizes = [layer_size + 1 for layer_size in layer_sizes]
+        layer_sizes[-1] -= 1
         self.layer_sizes = layer_sizes
         self.weights = []
+    
         for idx, layer_size in enumerate(layer_sizes):
-            weights_size = (pattern_size if idx == 0 else (layer_sizes[idx - 1]))
+            weights_size = pattern_size if idx == 0 else layer_sizes[idx - 1]
             layer_weights = np.empty(shape=(layer_size, weights_size))
             for i in range(layer_size):
                 layer_weights[i] = np.random.uniform(low=-0.5, high=0.5, size=weights_size)
@@ -19,9 +23,10 @@ class Multilayer:
     def solve(self, training_set):
         self.training_set = training_set
         weights = self.get_weights()
-        new_weights = optimize.minimize(self.calculate_error, self.get_weights(), method='Powell', bounds=[[-1, 1]] * len(weights))
+        solution = optimize.minimize(self.calculate_error, self.get_weights(), method='Powell', bounds=[[-1, 1]] * len(weights))
         # new_weights = algorithms.optimizers.ADAM(lr=1).optimize(len(weights), self.calculate_error, initial_point=self.get_weights())
 
+        new_weights = solution['x']
         print(new_weights)
         self.set_weights(new_weights)
 
@@ -37,21 +42,24 @@ class Multilayer:
     def set_weights(self, weights):
         i = 0
         for layer_idx, layer_size in enumerate(self.layer_sizes):
-            weights_size = (self.pattern_size if layer_idx == 0 else (self.layer_sizes[layer_idx - 1]))
+            weights_size = self.pattern_size if layer_idx == 0 else self.layer_sizes[layer_idx - 1]
             for perceptron_idx in range(layer_size):
                 for weight_idx in range(weights_size):
                     self.weights[layer_idx][perceptron_idx][weight_idx] = weights[i]
                     i += 1
 
-    def calculate_error_aux(self, training_set, correct_outputs):
+    def calculate_error_aux(self, weights, training_set, correct_outputs):
         tot = 0
         for u in range(len(training_set)):
+            start = 0
             prev_outputs = training_set[u]
             for idx, layer_size in enumerate(self.layer_sizes):
                 outputs = np.empty(shape=(layer_size))
+                weight_count = self.layer_sizes[idx - 1] if idx > 0 else self.pattern_size 
                 for i in range(layer_size):
-                    excitement = np.dot(prev_outputs, self.weights[idx][i])
-                    activation = Utils.g(excitement)
+                    excitement = np.dot(prev_outputs, weights[start: start + weight_count])
+                    start += weight_count
+                    activation = Utils.g(excitement) if (i > 0 or idx == len(self.layer_sizes) - 1) else -1
                     if idx == len(self.layer_sizes) - 1:
                         tot += (correct_outputs[u][i] - activation) ** 2
                     
@@ -59,9 +67,8 @@ class Multilayer:
 
                 prev_outputs = outputs
         
-        print(tot/2);
+        print(tot / 2);
         return tot / 2
 
     def calculate_error(self, weights):
-        self.set_weights(weights)
-        return self.calculate_error_aux(self.training_set["in"], self.training_set["out"])
+        return self.calculate_error_aux(weights, self.training_set["in"], self.training_set["out"])
