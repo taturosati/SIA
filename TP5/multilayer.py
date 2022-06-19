@@ -34,14 +34,17 @@ class Multilayer:
             self.calculate_error, 
             self.get_weights(), 
             method='Powell', 
-            bounds=[[-1, 1]] * len(weights), 
-            options={'xtol': 1e-2, 'ftol': 1e-2}
+            bounds=[[-1, 1]] * len(weights)
+            # options={'xtol': 1e-2, 'ftol': 1e-2}
         )
         # new_weights = algorithms.optimizers.ADAM().optimize(len(weights), self.calculate_error, initial_point=self.get_weights())
 
         new_weights = solution['x']
-        print(new_weights)
+        # print("Final weights", new_weights)
+        print("Final error", self.calculate_error(new_weights))
+
         self.set_weights(new_weights)
+
 
     def get_weights(self):
         weights = []
@@ -107,13 +110,13 @@ class Multilayer:
         return -1;
 
     def get_encoder_activation(self, excitement, layer_idx, perceptron_idx):
-        return self.get_activation(excitement, layer_idx, perceptron_idx, Utils.activation_lineal)
+        return self.get_activation(excitement, layer_idx, perceptron_idx, Utils.activation_sigmoid)
 
     def get_latent_activation(self, excitement, layer_idx, perceptron_idx):
-        return self.get_activation(excitement, layer_idx, perceptron_idx, Utils.activation_relu)
+        return self.get_activation(excitement, layer_idx, perceptron_idx, Utils.activation_sigmoid)
     
     def get_decoder_activation(self, excitement, layer_idx, perceptron_idx):
-        return self.get_activation(excitement, layer_idx, perceptron_idx, Utils.activation_not_lineal)
+        return self.get_activation(excitement, layer_idx, perceptron_idx, Utils.activation_sigmoid)
 
     def get_latent(self, input_pattern):
         encoder_output, weight_start_idx = self.get_encoder_output(self.get_weights(), input_pattern)

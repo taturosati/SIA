@@ -58,6 +58,13 @@ class Utils:
     def activation_relu(h):
         return max(0, h)
 
+    @staticmethod
+    def activation_sigmoid(x):
+        if -700 < x < 700:
+            return np.exp(x) / (1 + np.exp(x))
+
+        return 0 if x < 0 else 1
+
     # x -> conjunto de entrenamiento
     # y -> salida deseada
     @staticmethod
@@ -103,8 +110,8 @@ class Utils:
         return bin_array
 
 
-ret_one = lambda _: 1
+# ret_one = lambda _: 1
 
-solve_type_step = {"error": Utils.calculate_step_error, "activation": Utils.activation_simple, "mult": ret_one}
-solve_type_lineal = {"error": Utils.calculate_lineal_error, "activation": Utils.activation_lineal, "mult": ret_one}
-solve_type_not_lineal = {"error": Utils.calculate_not_lineal_error, "activation": Utils.activation_not_lineal, "mult": Utils.g_prime}
+# solve_type_step = {"error": Utils.calculate_step_error, "activation": Utils.activation_simple, "mult": ret_one}
+# solve_type_lineal = {"error": Utils.calculate_lineal_error, "activation": Utils.activation_lineal, "mult": ret_one}
+# solve_type_not_lineal = {"error": Utils.calculate_not_lineal_error, "activation": Utils.activation_not_lineal, "mult": Utils.g_prime}

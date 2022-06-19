@@ -12,6 +12,10 @@ def scatter_plot(points, labels):
     y = [p[1] for p in points]
 
     plt.scatter(x, y)
+    for i, label in enumerate(labels):
+        plt.annotate(label, (x[i], y[i])) 
+        
+    plt.title("Espacio latente 2D")
     plt.show()
 
 def plot_heatmap(matrix, title, labels=None):
@@ -19,7 +23,7 @@ def plot_heatmap(matrix, title, labels=None):
     df = pd.DataFrame(matrix)
 
     # Default heatmap
-    p = sns.heatmap(df, annot=labels, fmt='')
+    p = sns.heatmap(df, annot=labels, fmt='', cmap='Blues')
     p.set_title(title)
 
     plt.show()
