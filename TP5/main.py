@@ -8,21 +8,14 @@ from fonts import font_1, font_2
 
 font = np.array([np.array(Utils.to_bin_array(c)).flatten() for c in font_2])
 
-# plot_heatmap(C, "C")
-# for i in range(len(font)):
-#     for j in range(len(font[i])):
-#         if font[i][j] == 0:
-#             font[i][j] = -1
-
-
-font_subset = font[1:9]
+font_subset = font
 
 print("Primeras", len(font_subset), "letras")
-font_labels = [chr(0x41 + i) for i in range(len(font_subset))]
+font_labels = [chr(0x40 + i) for i in range(len(font_subset))]
 
-
-network = Multilayer([35, 14, 8, 12, 8, 14, 35], 35)
-print("Red: [35, 14, 8, 12, 8, 14, 35]")
+layers = [35, 25, 12, 16, 12, 16, 12, 25, 35]
+network = Multilayer([35, 25, 12, 16, 12, 16, 12, 25, 35], 35)
+print("Capas: ", layers)
 network.solve({"in": font_subset, "out": font_subset})
 
 points = []
