@@ -42,8 +42,7 @@ def plot_heatmap(matrix, title, labels=None):
 #     plt.show()
 
 
-def plot_multiple_heatmaps(data):
-    cols = 4
+def plot_multiple_heatmaps(data,cols):
     rows = math.ceil(len(data) / cols)
     plt.clf()
     plt.figure(layout="constrained")

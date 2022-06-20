@@ -19,13 +19,13 @@ font = np.array([np.array(Utils.to_bin_array(c)).flatten() for c in font_2])
 #             font[i][j] = -1
 
 
-font_subset = font[:4]
+font_subset = font[1:9]
 print("Primeras", len(font_subset), "letras")
-font_labels = [chr(0x40 + i) for i in range(len(font_subset))]
+font_labels = [chr(0x41 + i) for i in range(len(font_subset))]
 
 
-network = Multilayer([35, 11, 8, 12, 8, 11, 35], 35)
-print("Red: [35, 11, 8, 2, 8, 11, 35]")
+network = Multilayer([35, 14, 8, 12, 8, 14, 35], 35)
+print("Red: [35, 14, 8, 12, 8, 14, 35]")
 network.solve({"in": font_subset, "out": font_subset})
 
 points = []
@@ -43,7 +43,7 @@ for c in font_subset:
     # plot_heatmap(input_value, "Input")
     # plot_heatmap(decoded_value, "Decoded value")
 
-plot_multiple_heatmaps(matrices)
+plot_multiple_heatmaps(matrices, 8)
 
 scatter_plot(points, font_labels)
 

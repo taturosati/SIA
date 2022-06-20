@@ -35,7 +35,7 @@ class Multilayer:
             self.get_weights(), 
             method='Powell', 
             bounds=[[-1, 1]] * len(weights),
-            options={'maxiter': 30}
+            options={'maxiter': 50}
         )
         # new_weights = algorithms.optimizers.ADAM().optimize(len(weights), self.calculate_error, initial_point=self.get_weights())
 
@@ -72,7 +72,7 @@ class Multilayer:
             decoder_output, weight_start_idx = self.get_decoder_output(weights, latent_output, weight_start_idx)
             tot += sum((correct_outputs[u] - decoder_output) ** 2)
 
-        print(tot / 2);
+        # print(tot / 2);
         return tot / 2
 
     def calculate_error(self, weights):
