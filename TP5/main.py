@@ -1,6 +1,6 @@
 import math
 import numpy as np
-from plotter import scatter_plot, plot_heatmap
+from plotter import scatter_plot, plot_heatmap, plot_multiple_heatmaps
 
 from utils import Utils
 from multilayer import Multilayer
@@ -19,24 +19,31 @@ font = np.array([np.array(Utils.to_bin_array(c)).flatten() for c in font_2])
 #             font[i][j] = -1
 
 
-font_subset = font[:2]
+font_subset = font[:3]
+print("Primeras", len(font_subset), "letras")
 font_labels = [chr(0x40 + i) for i in range(len(font_subset))]
 
 
-network = Multilayer([35, 15, 9, 2, 9, 15, 35], 35)
+network = Multilayer([35, 11, 8, 12, 8, 11, 35], 35)
+print("Red: [35, 11, 8, 2, 8, 11, 35]")
 network.solve({"in": font_subset, "out": font_subset})
 
 points = []
+matrices = []
 for c in font_subset:
     latent_output = network.get_latent(c)
     points.append(latent_output)
-    print(latent_output)
+    # print(latent_output)
     decoded_value = network.output(c)
     decoded_value.resize((7,5))
     input_value = np.copy(c)
     input_value.resize((7,5))
-    plot_heatmap(input_value, "Input")
-    plot_heatmap(decoded_value, "Decoded value")
+    matrices.append(input_value)
+    matrices.append(decoded_value)
+    # plot_heatmap(input_value, "Input")
+    # plot_heatmap(decoded_value, "Decoded value")
+
+plot_multiple_heatmaps(matrices)
 
 scatter_plot(points, font_labels)
 

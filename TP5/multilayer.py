@@ -34,8 +34,8 @@ class Multilayer:
             self.calculate_error, 
             self.get_weights(), 
             method='Powell', 
-            bounds=[[-1, 1]] * len(weights)
-            # options={'xtol': 1e-2, 'ftol': 1e-2}
+            bounds=[[-1, 1]] * len(weights),
+            options={'maxiter': 50}
         )
         # new_weights = algorithms.optimizers.ADAM().optimize(len(weights), self.calculate_error, initial_point=self.get_weights())
 

@@ -27,3 +27,15 @@ def plot_heatmap(matrix, title, labels=None):
     p.set_title(title)
 
     plt.show()
+
+def plot_multiple_heatmaps(matrices):
+    plt.subplots(len(matrices)/4, 4)
+    for i, matrix in enumerate(matrices):
+        df = pd.DataFrame(matrix)
+        if i % 2 == 0:
+            title = "Input"
+        else:
+            title = "Decoded value"
+        p = sns.heatmap(df, fmt='', cmap='Blues')
+        p.set_title(title)
+    plt.show()

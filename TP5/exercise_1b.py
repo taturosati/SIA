@@ -23,7 +23,7 @@ for c in font_subset:
 
     output = dae.output(noisy_input)
     for i in range(len(output)):
-        output[i] = -1 if output[i] >= 0 else 1
+        output[i] = 1 if output[i] >= 0 else 0
     
     output.resize((7, 5))
     noisy_input.resize((7, 5))
