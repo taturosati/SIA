@@ -29,21 +29,24 @@ class Multilayer:
 
     def solve(self, training_set):
         self.training_set = training_set
+        self.min_error = math.inf
+        self.min_error_weights = None
+
         weights = self.get_weights()
-        solution = optimize.minimize(
+        optimize.minimize(
             self.calculate_error, 
-            self.get_weights(), 
+            weights, 
             method='Powell', 
             bounds=[[-1, 1]] * len(weights),
             options={'maxiter': 30}
         )
-        # new_weights = algorithms.optimizers.ADAM().optimize(len(weights), self.calculate_error, initial_point=self.get_weights())
 
-        new_weights = solution['x']
-        # print("Final weights", new_weights)
-        print("Final error", self.calculate_error(new_weights))
+    
 
-        self.set_weights(new_weights)
+        # new_weights = solution['x']
+        print("Final error", self.min_error)
+
+        self.set_weights(self.min_error_weights)
 
 
     def get_weights(self):
@@ -72,7 +75,10 @@ class Multilayer:
             decoder_output, weight_start_idx = self.get_decoder_output(weights, latent_output, weight_start_idx)
             tot += sum((correct_outputs[u] - decoder_output) ** 2)
 
-        print(tot / 2);
+        if tot < self.min_error:
+            self.min_error = tot
+            self.min_error_weights = weights
+
         return tot / 2
 
     def calculate_error(self, weights):
@@ -110,13 +116,16 @@ class Multilayer:
         return -1;
 
     def get_encoder_activation(self, excitement, layer_idx, perceptron_idx):
-        return self.get_activation(excitement, layer_idx, perceptron_idx, Utils.activation_sigmoid)
+        return self.get_activation(excitement, layer_idx, perceptron_idx, Utils.activation_not_lineal)
 
     def get_latent_activation(self, excitement, layer_idx, perceptron_idx):
         return self.get_activation(excitement, layer_idx, perceptron_idx, Utils.activation_relu)
     
     def get_decoder_activation(self, excitement, layer_idx, perceptron_idx):
-        return self.get_activation(excitement, layer_idx, perceptron_idx, Utils.activation_sigmoid)
+        if layer_idx == len(self.layer_sizes) - 1:
+            return Utils.activation_sigmoid(excitement)
+
+        return self.get_activation(excitement, layer_idx, perceptron_idx, Utils.activation_not_lineal)
 
     def get_latent(self, input_pattern):
         encoder_output, weight_start_idx = self.get_encoder_output(self.get_weights(), input_pattern)

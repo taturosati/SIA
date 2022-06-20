@@ -8,6 +8,6 @@ class DenoisingAutoencoder(Multilayer):
         for pattern in new_training_set:
             for i in range(len(pattern)):
                 if np.random.uniform() < 0.005:
-                    pattern[i] = -1 if pattern[i] == 1 else 1
+                    pattern[i] = 0 if pattern[i] == 1 else 1
        
         return super().calculate_error_aux(weights, new_training_set, correct_outputs)

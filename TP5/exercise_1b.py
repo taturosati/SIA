@@ -19,7 +19,7 @@ for c in font_subset:
     noisy_input = np.copy(c)
     for i in range(len(noisy_input)):
         if np.random.uniform() < 0.005:
-            noisy_input[i] = -1 if noisy_input[i] == 1 else 1
+            noisy_input[i] = 0 if noisy_input[i] == 1 else 1
 
     output = dae.output(noisy_input)
     for i in range(len(output)):

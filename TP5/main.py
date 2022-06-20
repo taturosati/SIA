@@ -7,25 +7,17 @@ from multilayer import Multilayer
 from fonts import font_1, font_2
 
 font = np.array([np.array(Utils.to_bin_array(c)).flatten() for c in font_2])
-# C = Utils.to_bin_array(font_2[3])
-# for i in range(len(C)):
-#     for j in range(len(C[i])):
-#         C[i][j] = 1 - C[i][j]
 
-# plot_heatmap(C, "C")
-# for i in range(len(font)):
-#     for j in range(len(font[i])):
-#         if font[i][j] == 0:
-#             font[i][j] = -1
-
-
-font_subset = font[:4]
+font_subset = font[:16]
 print("Primeras", len(font_subset), "letras")
 font_labels = [chr(0x40 + i) for i in range(len(font_subset))]
 
 
-network = Multilayer([35, 11, 8, 12, 8, 11, 35], 35)
-print("Red: [35, 11, 8, 2, 8, 11, 35]")
+layers = [35, 15, 20, 12, 8, 2, 8, 12, 20, 15, 35]
+print("Capas:", layers)
+
+network = Multilayer(layers, 35)
+
 network.solve({"in": font_subset, "out": font_subset})
 
 points = []
@@ -57,3 +49,5 @@ for i in range(len(decode_output)):
 decode_output.resize((7, 5))
 
 plot_heatmap(decode_output, "New letter")
+
+
