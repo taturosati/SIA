@@ -35,7 +35,7 @@ class Multilayer:
             self.get_weights(), 
             method='Powell', 
             bounds=[[-1, 1]] * len(weights),
-            options={'maxiter': 50}
+            options={'maxiter': 30}
         )
         # new_weights = algorithms.optimizers.ADAM().optimize(len(weights), self.calculate_error, initial_point=self.get_weights())
 
@@ -113,7 +113,7 @@ class Multilayer:
         return self.get_activation(excitement, layer_idx, perceptron_idx, Utils.activation_sigmoid)
 
     def get_latent_activation(self, excitement, layer_idx, perceptron_idx):
-        return self.get_activation(excitement, layer_idx, perceptron_idx, Utils.activation_sigmoid)
+        return self.get_activation(excitement, layer_idx, perceptron_idx, Utils.activation_relu)
     
     def get_decoder_activation(self, excitement, layer_idx, perceptron_idx):
         return self.get_activation(excitement, layer_idx, perceptron_idx, Utils.activation_sigmoid)

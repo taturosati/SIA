@@ -2,6 +2,7 @@ import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
 import seaborn as sns
+import math
 
 
 # points
@@ -28,14 +29,30 @@ def plot_heatmap(matrix, title, labels=None):
 
     plt.show()
 
-def plot_multiple_heatmaps(matrices):
-    plt.subplots(len(matrices)/4, 4)
-    for i, matrix in enumerate(matrices):
-        df = pd.DataFrame(matrix)
-        if i % 2 == 0:
-            title = "Input"
-        else:
-            title = "Decoded value"
-        p = sns.heatmap(df, fmt='', cmap='Blues')
-        p.set_title(title)
+# def plot_multiple_heatmaps(matrices, rows, cols):
+#     plt.subplots(rows, cols)
+#     for i, matrix in enumerate(matrices):
+#         df = pd.DataFrame(matrix)
+#         if i % 2 == 0:
+#             title = "Input"
+#         else:
+#             title = "Decoded value"
+#         p = sns.heatmap(df, fmt='', cmap='Blues')
+#         p.set_title(title)
+#     plt.show()
+
+
+def plot_multiple_heatmaps(data):
+    cols = 4
+    rows = math.ceil(len(data) / cols)
+    plt.clf()
+    plt.figure(layout="constrained")
+    fig, axes = plt.subplots(rows, cols)
+    # fig.subtitle(title)
+    [axi.set_axis_off() for axi in axes.ravel()]
+    for i in range(len(data)):
+        row = math.floor(i / cols)
+        col = i % cols
+        sns.heatmap(ax=axes[row, col] if rows > 1 else axes[col], data=data[i], cmap='Blues')
+    
     plt.show()

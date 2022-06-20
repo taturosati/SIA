@@ -19,7 +19,7 @@ font = np.array([np.array(Utils.to_bin_array(c)).flatten() for c in font_2])
 #             font[i][j] = -1
 
 
-font_subset = font[:3]
+font_subset = font[:4]
 print("Primeras", len(font_subset), "letras")
 font_labels = [chr(0x40 + i) for i in range(len(font_subset))]
 
