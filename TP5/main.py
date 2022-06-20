@@ -7,10 +7,6 @@ from multilayer import Multilayer
 from fonts import font_1, font_2
 
 font = np.array([np.array(Utils.to_bin_array(c)).flatten() for c in font_2])
-# C = Utils.to_bin_array(font_2[3])
-# for i in range(len(C)):
-#     for j in range(len(C[i])):
-#         C[i][j] = 1 - C[i][j]
 
 # plot_heatmap(C, "C")
 # for i in range(len(font)):
@@ -20,6 +16,7 @@ font = np.array([np.array(Utils.to_bin_array(c)).flatten() for c in font_2])
 
 
 font_subset = font[1:9]
+
 print("Primeras", len(font_subset), "letras")
 font_labels = [chr(0x41 + i) for i in range(len(font_subset))]
 
@@ -57,3 +54,5 @@ for i in range(len(decode_output)):
 decode_output.resize((7, 5))
 
 plot_heatmap(decode_output, "New letter")
+
+
