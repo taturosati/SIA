@@ -6,33 +6,31 @@ from fonts import font_2
 
 font = np.array([np.array(Utils.to_bin_array(c)).flatten() for c in font_2])
 
-font_subset = font[1:3]
+font_subset = font[1:9]
 print("Primeras", len(font_subset), "letras")
 font_labels = [chr(0x41 + i) for i in range(len(font_subset))]
 
-noise = 0.005
-dae = DenoisingAutoencoder([35, 18, 25, 10, 25, 18, 35], 35, noise)
+prob = 0.1
+max_noise = 0.3
+print("Mutation prob:", prob)
+print("Max noise:", max_noise)
 
+layers = [35, 25, 10, 12, 5, 12, 10, 25, 35]
+dae = DenoisingAutoencoder(layers, 35, prob, max_noise)
+
+print("Capas: ", layers)
 dae.solve({"in": font_subset, "out": font_subset})
-
 
 data = []
 for c in font_subset:
-    noisy_input = np.copy(c)
-    for i in range(len(noisy_input)):
-        if np.random.uniform() < noise:
-            noisy_input[i] = 0 if noisy_input[i] == 1 else 1
+    noisy_input = Utils.noise_pattern(c, prob, max_noise)
 
     output = dae.output(noisy_input)
-    for i in range(len(output)):
-        output[i] = 1 if output[i] >= 0 else 0
     
     output.resize((7, 5))
     noisy_input.resize((7, 5))
     data.append(noisy_input)
     data.append(output)
-    # plot_heatmap(noisy_input, "input")
-    # plot_heatmap(output, "output")
 
 plot_multiple_heatmaps(data, 8)
 

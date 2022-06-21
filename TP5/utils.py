@@ -1,5 +1,4 @@
 import math
-from attr import s
 import numpy as np
 
 class Utils:
@@ -21,6 +20,16 @@ class Utils:
         first = a[indices]
         second = b[indices]
         return first, second
+
+    @staticmethod
+    def noise_pattern(pattern, prob, max_noise):
+        new_pattern = pattern.copy().astype(float)
+        for i in range(len(pattern)):
+            if np.random.uniform() < prob:
+                noise_amount = np.random.uniform(0, max_noise)
+                new_pattern[i] += -noise_amount if pattern[i] == 1 else noise_amount
+
+        return new_pattern
 
     @staticmethod
     def escalate(arr):

@@ -3,7 +3,6 @@ import math
 import numpy as np
 from scipy import optimize
 from utils import Utils
-from qiskit import algorithms
 
 class Multilayer:
     def __init__(self, layer_sizes, pattern_size):
@@ -40,6 +39,7 @@ class Multilayer:
             bounds=[[-1, 1]] * len(weights),
             options={'maxiter': 50}
         )
+
 
         print("Final error", self.min_error / 2)
 
