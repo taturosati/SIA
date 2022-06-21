@@ -15,7 +15,7 @@ max_noise = 0.3
 print("Mutation prob:", prob)
 print("Max noise:", max_noise)
 
-layers = [35, 25, 10, 12, 5, 12, 10, 25, 35]
+layers = [35, 25, 9, 12, 4, 12, 9, 25, 35]
 dae = DenoisingAutoencoder(layers, 35, prob, max_noise)
 
 print("Capas: ", layers)
